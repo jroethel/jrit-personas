@@ -1,0 +1,12 @@
+{
+  "name": "jrit-persona",
+  "owner": { "name": "Jeremy Roethel" },
+  "description": "Marketplace for the jrit-persona plugin: portable persona authoring and consumption.",
+  "plugins": [
+    {
+      "name": "jrit-persona",
+      "source": "./",
+      "description": "Portable persona authoring: create, craft with, review against, and spawn personas that carry consistent voice and stance."
+    }
+  ]
+}
