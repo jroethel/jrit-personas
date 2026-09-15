@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning Guide - jrit-persona brainstorm</title>
+<style>
+:root {
+  --ink: #2b2b2b; --muted: #6b6b60; --accent: #4a6b57;
+  --bg: #faf9f5; --card: #ffffff; --line: #e4e1d7;
+}
+body {
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: var(--ink); background: var(--bg);
+  max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem;
+  line-height: 1.6;
+}
+h1 { font-size: 1.7rem; margin-bottom: 0.2rem; }
+.subtitle { color: var(--muted); margin-top: 0; }
+h2 {
+  font-size: 1.15rem; color: var(--accent);
+  border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin-top: 2.5rem;
+}
+section.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  padding: 0.2rem 1.2rem 0.8rem; margin: 1rem 0;
+}
+dt { font-weight: 600; margin-top: 0.9rem; }
+dd { margin: 0.15rem 0 0 0; color: #444; }
+.why { color: var(--muted); font-size: 0.92rem; }
+code { background: #f0eee6; padding: 0.1em 0.35em; border-radius: 4px; font-size: 0.9em; }
+table { border-collapse: collapse; width: 100%; margin: 0.8rem 0; font-size: 0.95rem; }
+th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+</style>
+</head>
+<body>
+<h1>Learning Guide</h1>
+<p class="subtitle">jrit-persona brainstorm session - 2026-09-14</p>
+
+<h2>1. Project summary and scope</h2>
+<section class="card">
+  <dl>
+    <dt>What this session produced</dt>
+    <dd>A loop-brainstorm run from raw idea ("port arscontexta as jrit-persona") to an approved-shape brief at <code>docs/briefs/2026-09-14.jrit-persona-port-brief.md</code>, including a two-lens Rubix pass with dispositions recorded in the brief.</dd>
+    <dt>Where the session left off</dt>
+    <dd>Pending at close: Jeremy's accept of the brief, then the commit, then graduation of the 12 parked items into <code>idea</code> issues, then hand-off to <code>/loop-plan</code>.</dd>
+    <dt>What jrit-persona is</dt>
+    <dd>A fresh Claude Code plugin (this repo) selectively porting arscontexta's persona-relevant core: 4-axis voice framework, conversational derivation method, preset pack shape, runtime-manifest pattern. Four commands: <code>persona-new</code>, <code>persona-craft</code>, <code>persona-review</code>, <code>persona-spawn</code>.</dd>
+    <dt>Port source pinned</dt>
+    <dd>github.com/agenticnotetaking/arscontexta at commit <code>2acfd5cc</code> (2026-02-19). The working clone lives in <code>/tmp/arscontexta</code> and is wiped on reboot; all citations resolve against the pinned commit on GitHub.</dd>
+  </dl>
+</section>
+
+<h2>2. Architectural principles that emerged</h2>
+<section class="card">
+  <dl>
+    <dt>Port the method, never the machinery</dt>
+    <dd>Kept: the 4-axis voice framework (<code>reference/personality-layer.md</code>), derivation-as-conversation, conflict rules, the transformation matrix. Left: the 249-note methodology graph, vault three-space architecture, 16 note skills, the numeric confidence scoring (weighted signals, 1.5 resolution threshold).</dd>
+    <dd class="why">The scoring machinery exists to stop an interview across 8 dimensions feeding 15 generated files; a persona is one cheap human-reviewed file. Rigor machinery must match blast radius.</dd>
+    <dt>A persona file is a declarative, role-agnostic sheet</dt>
+    <dd>Rendering is a function of persona x role (creator, audience, reviewer, agent identity - open set) x consumer, owned by the consumer via the transformation matrix. Personas never embed prompts or roles; the kind field is an affordance hint, not a role lock.</dd>
+    <dd class="why">Surfaced 2026-09-14 when Jeremy generalized "audience pack parallel to brand pack" to "creator is also parallel", exposing that the matrix as first written was one axis short.</dd>
+    <dt>Voice, not substance (composition rule)</dt>
+    <dd>Personas carry stance and voice; skills carry methodology; global principles carry standing constraints. A persona never overrides a rule - substance beats voice, explicit beats implicit. Provenance stack: harness, then global principles, then skill, then persona; spawned agents are derived renderings, regenerated, never hand-forked.</dd>
+    <dt>Durable invariants are how a lean v1 avoids costing future scale</dt>
+    <dd>Stable names as identifiers; self-contained portable text (model- and harness-agnostic); compact sheets (step-0 loading); provenance metadata (author, owner, created, last-validated, derivation source); trust boundary (stance and voice only, never permissions or tool instructions, treated as untrusted input).</dd>
+    <dd class="why">Missed scale never comes from building too little in v1; it comes from format decisions that foreclose unmapped futures. Divergence feeds invariants, invariants constrain seam work, v1 stays thin.</dd>
+    <dt>Three qualitative bins replace numeric confidence</dt>
+    <dd>persona-new's single hybrid flow labels each extracted trait stated / inferred / defaulted; the confirm pass covers only the weak bins. Binary stated/not-stated loses the inferred middle and either ships wrong extractions silently or re-asks what was communicated.</dd>
+  </dl>
+</section>
+
+<h2>3. Design-process learnings</h2>
+<section class="card">
+  <dl>
+    <dt>Brainstorm from consumers backward, not from source material forward</dt>
+    <dd>The session's biggest miss: anchoring on arscontexta's creation-engine shape produced "creation + a thin apply" while Jeremy, thinking from usage backward, supplied the four-command surface, the two-persona composition (voice x audience), and the role axis.</dd>
+    <dd class="why">Diagnosed on Jeremy's direct ask "what had you as the brainstormer miss these possibilities?"; root causes: source-forward anchoring, unary application model, convergence pressure applied during divergence, sweeping tools instead of the workflow behind them. Saved to persistent memory as brainstorm-from-consumers-backward.</dd>
+    <dt>The possibility sweep (4 moves) closes that gap structurally</dt>
+    <dd>Future-back pass, cross-product enumeration, consumer-backward walk, scale probes - run before convergence, output capped to parked items and durable invariants, banned from widening Done-looks-like. Filed as jrit-loop#17; dogfooded on this brief, yielding 4 invariants and 4 parked items.</dd>
+    <dt>Near-miss: a proposal quietly reversing a settled decision</dt>
+    <dd>Jeremy's four-command proposal said personas are "saved to your personal cross-project library", which would have silently dropped the settled global+project two-home answer. Flagged out loud; Jeremy kept global+project. Supersessions must be explicit decisions with dates - the brief records the one real supersession ("both, layered" replaced by the single hybrid flow, 2026-09-14).</dd>
+    <dt>Near-miss: verb collision in the command surface</dt>
+    <dd><code>persona-new</code> (makes a persona) vs <code>persona-create</code> (makes content) would be misremembered constantly. Renamed; "draft" was rejected because deliverables span writing, design, and diagrams - <code>persona-craft</code> chosen, aligning with the future craft skillpack.</dd>
+    <dt>Adjudicating another session's proposal: agree only after an adversarial pass</dt>
+    <dd>Another session's hybrid persona-new recommendation was verified against disk (the 1.5 threshold claim checked in <code>skills/setup/SKILL.md</code> lines 185-340), agreed with in core, and amended twice: three-bin labels instead of binary, and the silent supersession of "both, layered" surfaced as an explicit call.</dd>
+    <dt>Fresh-context review finds what the author's chair cannot</dt>
+    <dd>The Rubix pass (Lens A impacted-professional, Lens B cold craft on Opus) found: the port's source of record in wipeable /tmp, an unverified eval-harness capability underwriting two [executed-check] criteria, missing MIT attribution, and the persona-as-injection-surface trust gap. None had surfaced inline.</dd>
+  </dl>
+</section>
+
+<h2>4. User preferences (carry into future sessions)</h2>
+<section class="card">
+  <dl>
+    <dt>Solo-first, global-library-first for v1</dt>
+    <dd>Rubix findings pushing project-first defaults and embed-or-copy spawn (A1, A2, A4) were deliberately deferred into the team-distribution parked item, not folded. Do not re-raise them for v1 work.</dd>
+    <dt>Keep the four-command surface</dt>
+    <dd>Lens B's "ship persona-new plus one consumer" (B5) was declined. Jeremy chose breadth of the consumption surface deliberately.</dd>
+    <dt>Naming: "craft" over "draft" or "content"</dt>
+    <dd>Deliverables are writing, design, diagrams - not text only.</dd>
+    <dt>Explore the full possibility space before converging, without growing v1</dt>
+    <dd>Jeremy asked for "4D thinking" and future-back work that "should never cost me missed scale, power, or impact" - satisfied via the parked-items-plus-invariants cap, not scope growth.</dd>
+    <dt>Dropped means dropped</dt>
+    <dd>The donor-pretesting idea was excluded from the parking lot entirely on his call - it lives nowhere in the brief. Do not resurrect parked-item candidates he explicitly excluded.</dd>
+    <dt>House style enforced mechanically</dt>
+    <dd>Plain "-" never an em dash; one sentence per line in Markdown; pipe-table alignment verified by character position (a one-off misalignment was caught and fixed by checking pipe columns, not by eye).</dd>
+  </dl>
+</section>
+
+<h2>5. Key decisions register</h2>
+<section class="card">
+  <table>
+    <tr><th>Decision</th><th>Alternatives considered</th><th>Why</th></tr>
+    <tr><td>Fresh plugin, selective port</td><td>Fork-and-prune arscontexta; adopt-and-extend zvoque/claude-personas</td><td>The 1713-line setup skill is vault-entangled; pruning cost exceeds fresh build. zvoque is an external moving foundation without derivation depth or content lenses.</td></tr>
+    <tr><td>Single hybrid creation flow (supersedes "both, layered")</td><td>Full numeric derivation engine; pure guided Q&amp;A; template + derivation as two paths</td><td>The hybrid degrades gracefully in both directions; one creation skill instead of two.</td></tr>
+    <tr><td>One schema, kind field</td><td>Two artifact types for agent personas vs lenses</td><td>One format, two uses; kinds are affordance hints, roles assigned at invocation.</td></tr>
+    <tr><td>Global <code>~/.config/jrit/personas/</code> + project <code>personas/</code>, project shadows</td><td>Global-only; project-only</td><td>Audience personas recur across projects; project voices stay scoped. Reaffirmed against two later proposals to change it.</td></tr>
+    <tr><td>Four commands: new, craft, review, spawn</td><td>Generic persona-apply; two-command lean v1 (Rubix B5)</td><td>Verb per job; craft = voice x audience composition; spawn = durable project agent; review = fit check via fresh-context lens.</td></tr>
+    <tr><td>Three starters: jeremy-voice, leadership-audience, architecture-reviewer</td><td>Ship empty</td><td>Format exemplars and eval fixtures; jeremy-voice derives from VOICE.md but is never a silent default.</td></tr>
+    <tr><td>Full eval suite</td><td>Schema check only; schema + one smoke eval</td><td>Jeremy chose the heaviest option; quality over development cost.</td></tr>
+    <tr><td>Eval-harness capability probe is seam 1</td><td>Harness last (original seam 6)</td><td>Rubix B1: an unverified multi-turn capability underwrites the creation criteria; a "no" reshapes persona-new's design, not just its tests.</td></tr>
+  </table>
+</section>
+
+<h2>6. Operational learnings</h2>
+<section class="card">
+  <dl>
+    <dt>Ecosystem negatives require a dated check</dt>
+    <dd>A 2026-09-14 search found real prior art (zvoque/claude-personas, tommcfarlin persona-generator, FortunaTerra review panel); recorded in the brief as dated facts with the stealable per-turn re-assertion hook noted.</dd>
+    <dt>Cross-model lens diversity is cheap and worth it</dt>
+    <dd>Rubix Lens B ran on Opus while Lens A ran on the session default, so the review was not one model in two costumes.</dd>
+    <dt>/tmp is not a source of record</dt>
+    <dd>Anything cited by path and line from a /tmp clone must be pinned to an upstream commit SHA in the durable artifact.</dd>
+    <dt>Related tracker items get cross-referenced, not merged</dt>
+    <dd>jrit-loop#17 (possibility sweep) filed with an explicit "related, different ask" pointer to jrit-loop#8 (where architecture brainstorming fits).</dd>
+  </dl>
+</section>
+
+<footer>Generated from the 2026-09-14 brainstorm session (Claude Fable 5 + Jeremy). Companion docs live in <code>docs/briefs/2026-09-14.jrit-persona-port-brief.md</code> and jrit-loop issue #17.</footer>
+</body>
+</html>
