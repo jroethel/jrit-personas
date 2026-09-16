@@ -19,6 +19,8 @@ done
 if command -v claude >/dev/null 2>&1; then
   echo "== claude plugin validate --strict ."
   claude plugin validate --strict . || fail "claude plugin validate --strict . failed"
+  echo "== claude plugin validate --strict .claude-plugin/plugin.json"
+  claude plugin validate --strict .claude-plugin/plugin.json || fail "claude plugin validate --strict .claude-plugin/plugin.json failed"
 else
   echo "skip: claude plugin validate --strict . (claude binary not on PATH)"
 fi
