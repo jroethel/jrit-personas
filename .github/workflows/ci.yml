@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  offline-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The live-model eval suite (`claude plugin eval evals`) is deliberately out of CI scope: it needs an authenticated model and incurs per-run cost, so it stays a local, pre-merge acceptance run.
+      - name: Offline gate
+        run: bash ci/run-all.sh
