@@ -37,6 +37,7 @@ searched:
 ```
 
 The failure is terminal for the skill invocation: there is no fallback persona and no default voice.
+One documented consumer-side exception exists: jrit-core's rubix-review skill wires its Lens A audience seat with a soft degrade-on-miss (inline seat prose with disclosure) instead of this terminal contract, scoped to that one seat only.
 
 ## Notes
 
