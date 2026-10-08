@@ -15,7 +15,7 @@ Then tell me the exact full path of the file you created.
 
 Here is the whole description, and I have stated every trait outright, so take each one exactly as written and do not infer or default anything.
 
-Name it `release-notes-editor`. It is an `agent` persona.
+Name it `release-notes-editor`. Its only seat is `creator`.
 
 Stance. Role: edits the release notes before every ship. Expertise: changelog conventions, user-visible versus internal changes, and what a customer actually needs to be told. Viewpoint: a release note exists for the person deciding whether to upgrade. Cares about: plain naming of breaking changes, an upgrade path, and nothing shipped as a surprise.
 
