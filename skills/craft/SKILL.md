@@ -12,13 +12,15 @@ user-invocable: true
 
 # craft: render a deliverable through a voice, at an audience's altitude
 
-You take a voice persona (an `agent` kind: the writer) and an audience persona (an `audience` kind: the reader), and render one deliverable that sounds like the voice and lands at the audience's altitude.
+You take a voice persona (one whose `seats` holds `creator`: the writer) and an audience persona (one whose `seats` holds `audience`: the reader), and render one deliverable that sounds like the voice and lands at the audience's altitude.
+A persona holding several seats qualifies for each seat it holds.
+One persona may be named for both roles when it holds both seats.
 Two arguments are always required: which persona writes, and which persona reads.
 If the user names only one, or names neither, ask for the missing name before doing anything else; do not default one of them.
 
 ## Step 0: resolve both personas
 
-Resolve the voice persona name and the audience persona name independently, following `${CLAUDE_PLUGIN_ROOT}/references/resolution.md`: the project's `personas/` directory first, then the global `~/.config/jrit/personas/` library, project wins on a name collision.
+Resolve the voice persona name and the audience persona name independently, following the four-tier order in `${CLAUDE_PLUGIN_ROOT}/references/resolution.md`: the project library, then the user library, then the team library when configured, then the distributed library, with the most local tier winning on a name collision.
 State both resolved paths in your response before producing anything else, for example:
 
 ```
@@ -26,8 +28,15 @@ voice persona resolved: personas/architecture-reviewer.md (project)
 audience persona resolved: personas/leadership-audience.md (project)
 ```
 
-If either name resolves in neither location, stop and report the resolution failure exactly as `references/resolution.md` describes (the missing name and both searched locations for that persona).
+If either name resolves in no tier, stop and report the resolution failure exactly as `references/resolution.md` describes (the missing name and every searched location for that persona).
 This is a hard fail, not a guess: never fall back to an unnamed default voice or a generic audience, and never proceed with only one persona resolved.
+
+After resolution, check each resolved persona for a legacy `kind:` line with no `seats:` line.
+If one carries it, stop and say the file uses the retired `kind:` key, with the one-line fix: replace `kind: agent` with `seats: [creator]`, or `kind: audience` with `seats: [audience]`.
+
+Then check both personas before stopping.
+If the voice persona lacks `creator` or the audience persona lacks `audience`, stop and name every persona that is missing its seat.
+There is no fallback: never write the deliverable with a persona sitting in a seat it does not hold.
 
 ## Step 1: read the transformation matrix
 
@@ -35,16 +44,23 @@ Read `${CLAUDE_PLUGIN_ROOT}/references/voice-framework.md`.
 A craft deliverable is a "written deliverable" in the personality-by-artifact transformation matrix; take the voice persona's `Warmth` and `Formality` positions and use the matching cell (Warm+Casual, Warm+Formal, Clinical+Casual, or Clinical+Formal; treat `playful` as the `warm` column, since the matrix only names four cells) as the base register.
 Layer the voice persona's `Opinionatedness` and `Emotional awareness` on top using the axis definitions earlier in the same reference: an opinionated voice states a preference and its reasoning rather than presenting options equally, and an emotionally-attentive voice may acknowledge context the material carries, while a task-focused voice reports it plainly.
 Carry the voice persona's `Notes:` and `Cares about:` into what the deliverable emphasizes and how findings or recommendations are framed.
+When the voice persona has a `## As creator` section, its `Emphasizes:` joins `Notes:` and `Cares about:` in what the deliverable foregrounds.
+Its `Produces:` tells you the forms this voice is used to writing, which informs register but never overrides what the user asked for.
 
 ## Step 2: shape for the audience's altitude
 
 The audience persona's `Stance` sets the reader's altitude, not the voice's.
-If the audience's Stance says it wants the executive summary, the ask, or the bottom line before supporting detail, the deliverable opens with that summary layer first, in one paragraph, before any background, methodology, or detail follows.
-If the audience's Stance instead says it wants detail, background, or reasoning before a conclusion, the deliverable opens with that detail and does not lead with a whole-document summary.
+When the audience persona has a `## As audience` section, its `Wants first:` decides lead order.
+Summary-first opens with one summary paragraph, before any background, methodology, or detail follows.
+Detail-first opens with detail and does not lead with a whole-document summary.
+Without that section, lead order is read from the Stance: if it says the reader wants the executive summary, the ask, or the bottom line before supporting detail, the deliverable is summary-first, and if it says the reader wants detail, background, or reasoning before a conclusion, the deliverable is detail-first.
 Match the audience's `Expertise` (skip or compress what the reader already knows) and its `Cares about` line (foreground the dimensions it names, such as cost, risk, or dates).
+When a `## As audience` section is present, its `Cares about:` is foregrounded alongside the Stance's.
 
-Honor the audience persona's `jargon-tolerance` and, when present, its `banned-jargon` list: every term on that list is absent from the deliverable, with no synonym substitution that still carries the same jargon meaning.
-An audience with no `banned-jargon` key has no banned terms to enforce beyond ordinary clarity.
+Read the `## Jargon` section of `${CLAUDE_PLUGIN_ROOT}/docs/persona-format.md`, and apply the audience's `jargon-tolerance` (`low`, `medium`, `high`) and `banned-jargon` exactly as defined there.
+Every term on the `banned-jargon` list is absent from the deliverable, with no synonym substitution that still carries the same jargon meaning.
+When the audience persona has no `jargon-tolerance`, no tolerance level is applied or inferred: only `banned-jargon` and plain clarity apply.
+Creator jargon is never a persona field, so the writer's jargon always follows the audience.
 
 ## Step 3: write the deliverable
 
