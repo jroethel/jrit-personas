@@ -1,6 +1,6 @@
 ---
 name: director-program-manager
-kind: audience
+seats: [audience]
 author: Jeremy Roethel
 owner: jroethel
 created: 2026-09-19

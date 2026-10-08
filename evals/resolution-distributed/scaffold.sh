@@ -13,7 +13,7 @@ mkdir -p "$HOME/.config/jrit/personas"
 cat > "$HOME/.config/jrit/personas/data-analyst.md" <<'USER'
 ---
 name: data-analyst
-kind: audience
+seats: [audience]
 author: Jeremy Roethel
 owner: jroethel
 created: 2026-09-19

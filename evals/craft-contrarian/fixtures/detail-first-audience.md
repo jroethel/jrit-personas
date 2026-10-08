@@ -1,6 +1,6 @@
 ---
 name: detail-first-audience
-kind: audience
+seats: [audience]
 author: Jeremy Roethel
 owner: Jeremy Roethel
 created: 2026-09-15

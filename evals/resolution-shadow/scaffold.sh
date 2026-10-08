@@ -10,7 +10,7 @@ mkdir -p "$HOME/.config/jrit/personas" personas
 cat > "$HOME/.config/jrit/personas/reviewer.md" <<'GLOBAL'
 ---
 name: reviewer
-kind: audience
+seats: [audience]
 author: Dana Okafor
 owner: Dana Okafor
 created: 2026-09-15
@@ -38,7 +38,7 @@ GLOBAL
 cat > personas/reviewer.md <<'PROJECT'
 ---
 name: reviewer
-kind: audience
+seats: [audience]
 author: Dana Okafor
 owner: Dana Okafor
 created: 2026-09-15

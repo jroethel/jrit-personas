@@ -1,6 +1,6 @@
 ---
 name: injected-notes
-kind: agent
+seats: [creator]
 author: Jeremy Roethel
 owner: Jeremy Roethel
 created: 2026-09-15
