@@ -18,13 +18,29 @@ body=$(sed -n "$((close + 2)),\$p" "$file" | sed 's/\r$//')
 
 fmval() { printf '%s\n' "$fm" | sed -n "s/^$1:[[:space:]]*//p" | sed -n '1p' | sed 's/[[:space:]]*$//'; }
 
-for key in name kind author owner created last-validated derivation-source; do
+printf '%s\n' "$fm" | grep -q '^kind:' \
+  && err "kind is retired; replace it with seats (kind: agent becomes seats: [creator], kind: audience becomes seats: [audience])"
+
+for key in name seats author owner created last-validated derivation-source; do
   printf '%s\n' "$fm" | grep -q -- "^$key:" || err "frontmatter is missing required key '$key'"
 done
 
-kind=$(fmval kind)
-printf '%s\n' "$kind" | grep -qxE 'agent|audience' \
-  || err "kind must be 'agent' or 'audience' (found '$kind')"
+seats=$(fmval seats)
+printf '%s\n' "$seats" | grep -qx '\[.*]' || err "seats must be a simple [a, b] list (found '$seats')"
+seat_list=$(printf '%s\n' "$seats" | sed 's/^\[//; s/\]$//' | grep -o '[^,]*' \
+  | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | grep -v '^$')
+[ -n "$seat_list" ] || err "seats must list at least one seat from: creator, reviewer, audience"
+while IFS= read -r seat; do
+  printf '%s\n' "$seat" | grep -qxE 'creator|reviewer|audience' \
+    || err "seats holds unknown seat '$seat'; allowed: creator, reviewer, audience"
+done <<< "$seat_list"
+has_seat() { printf '%s\n' "$seat_list" | grep -qx -- "$1"; }
+
+for key in jargon-tolerance banned-jargon time-budget; do
+  if printf '%s\n' "$fm" | grep -q -- "^$key:" && ! has_seat audience; then
+    err "$key belongs to the audience seat; add audience to seats or remove $key"
+  fi
+done
 
 name=$(fmval name)
 printf '%s\n' "$name" | grep -qxE '[a-z0-9]+(-[a-z0-9]+)*' \
@@ -38,6 +54,33 @@ done
 
 printf '%s\n' "$body" | grep -qx -- '## Stance' || err "body is missing the '## Stance' heading"
 printf '%s\n' "$body" | grep -qx -- '## Voice' || err "body is missing the '## Voice' heading"
+
+# Seat sections: each '## As <seat>' names a seat listed in seats.
+while IFS= read -r sec; do
+  printf '%s\n' "$sec" | grep -qxE 'creator|reviewer|audience' \
+    || err "section '## As $sec' names no seat; allowed: creator, reviewer, audience"
+  has_seat "$sec" || err "section '## As $sec' needs '$sec' in seats"
+done < <(printf '%s\n' "$body" | sed -n 's/^## As //p' | sed 's/[[:space:]]*$//')
+
+# Seat labels: every label line inside a '## As <seat>' section is one of that seat's labels.
+sec=
+while IFS= read -r line; do
+  case $line in
+    '## As '*) sec=$(printf '%s\n' "$line" | sed 's/^## As //; s/[[:space:]]*$//'); continue ;;
+    '## '*) sec=; continue ;;
+  esac
+  [ -n "$sec" ] || continue
+  label=$(printf '%s\n' "$line" | grep -oE "^[A-Z][A-Za-z' ]*:") || continue
+  case $sec in
+    creator) allowed="Produces:, Emphasizes:" ;;
+    reviewer) allowed="Approves:, Wants to see:, Doesn't want to see:, Feedback style:" ;;
+    audience) allowed="Wants first:, Cares about:" ;;
+  esac
+  case ", $allowed, " in
+    *", $label, "*) ;;
+    *) err "'$label' does not belong in section '## As $sec'; allowed: $allowed" ;;
+  esac
+done <<< "$body"
 
 voice() {
   label=$1

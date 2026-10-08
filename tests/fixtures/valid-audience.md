@@ -1,6 +1,6 @@
 ---
 name: leadership-briefing
-kind: audience
+seats: [audience]
 author: Marcus Webb
 owner: Marcus Webb
 created: 2026-09-15

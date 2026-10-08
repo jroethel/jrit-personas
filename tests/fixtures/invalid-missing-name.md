@@ -1,5 +1,5 @@
 ---
-kind: agent
+seats: [creator]
 author: Priya Natarajan
 owner: Priya Natarajan
 created: 2026-09-15

@@ -20,7 +20,7 @@ Required keys:
 | Key | Value |
 |-----|-------|
 | `name` | kebab-case stable id, `^[a-z0-9]+(-[a-z0-9]+)*$` |
-| `kind` | `agent` or `audience` |
+| `seats` | simple list drawn from `creator`, `reviewer`, `audience`; at least one |
 | `author` | free string: who derived the persona |
 | `owner` | free string: who owns it now |
 | `created` | date, `^[0-9]{4}-[0-9]{2}-[0-9]{2}$` |
@@ -31,16 +31,43 @@ Optional keys:
 
 | Key | Value |
 |-----|-------|
-| `jargon-tolerance` | `low`, `medium`, or `high` |
-| `banned-jargon` | simple list of strings; audience kind only |
-| `time-budget` | free string, e.g. `five minutes` |
+| `jargon-tolerance` | `low`, `medium`, or `high`; audience seat only |
+| `banned-jargon` | simple list of strings; audience seat only |
+| `time-budget` | free string, e.g. `five minutes`; audience seat only |
 
-An `agent` persona is one an agent adopts; an `audience` persona is a reader the output is shaped for.
-`banned-jargon` carries meaning only for the `audience` kind and does not appear on an `agent` persona.
+## Seats
+
+`seats` names the seats this one person sits in, as a simple list drawn from `creator`, `reviewer`, and `audience`; at least one seat is required.
+
+- `creator`: the persona writes deliverables in its own voice.
+- `reviewer`: the persona approves material other people drafted.
+- `audience`: the persona reads material shaped for it.
+
+Stance and Voice are shared across every seat: one identity, one voice.
+Each seat may add an optional `## As <seat>` section holding only what that seat adds; a section for a seat not listed in `seats` is a format error.
+The persona carries no severity: whoever runs a review rates each finding by its own rules, the persona never gates, and the human decides.
+The reviewer seat lists what this person looks at; it never overrides a skill's methodology or a standing rule, and substance beats voice still holds.
+
+`seats` replaces the retired `kind` key, and a file that still carries `kind` fails the format check.
+Migration is mechanical: `kind: agent` becomes `seats: [creator]`, and `kind: audience` becomes `seats: [audience]`; seat sections are optional, so no body edit is required.
+
+## Jargon
+
+`jargon-tolerance`, `banned-jargon`, and `time-budget` belong to the audience seat, and the format check rejects them when `audience` is not in `seats`.
+Creator and reviewer jargon is never a persona field: it always comes from the audience of the material.
+
+- Jargon is any term this reader would need explained to follow the sentence: insider acronyms, method and framework names, system, tool, object, and field names, and team shorthand.
+  Whether a term is jargon depends on the reader, not the term.
+- `low`: every jargon term is replaced with plain words or defined in plain words at first use; no undefined acronyms.
+- `medium`: terms native to the reader's own field are fine undefined; terms from other fields are defined at first use.
+- `high`: specialist terms from the reader's field and adjacent fields are used freely.
+- `banned-jargon`: terms never used, even when defined, and never swapped for a synonym that carries the same jargon meaning.
+
+When `jargon-tolerance` is absent, no tolerance level is judged and none is inferred: only `banned-jargon` and plain clarity apply.
 
 ## Body
 
-The body carries two sections.
+The body carries two required sections, `## Stance` and `## Voice`, then an optional `## As <seat>` section for each seat in `seats`, conventionally in the order creator, reviewer, audience.
 
 ### `## Stance`
 
@@ -63,18 +90,39 @@ One position on each of the four axes defined in `references/voice-framework.md`
 
 The hyphenated `emotionally-attentive` is the format value; the framework reference writes the same position as prose, "emotionally attentive".
 
+### `## As creator` (optional, `creator` seat only)
+
+- `Produces:` the deliverables this persona writes
+- `Emphasizes:` what its drafts foreground
+
+### `## As reviewer` (optional, `reviewer` seat only)
+
+- `Approves:` what it signs off on
+- `Wants to see:` what it looks for and is glad to find
+- `Doesn't want to see:` red flags it raises, not denials; exceptions are allowed
+- `Feedback style:` how it says so
+
+`Wants to see:` and `Doesn't want to see:` are two separate lists, never one mixed list.
+
+### `## As audience` (optional, `audience` seat only)
+
+- `Wants first:` free prose naming what this reader wants up front; craft's lead-order rule reads it as summary-first or detail-first
+- `Cares about:` what it foregrounds as a reader
+
+Each `## As <seat>` section holds only its own seat's labels, and the format check rejects a label filed under another seat.
+
 ## Conformance
 
-A file conforms when the frontmatter fence opens on line 1 and closes, every required key is present, `kind` is in its enum, `name` is kebab-case, both dates are `YYYY-MM-DD`, the four voice keys each hold an allowed value when present, and both body headings are present.
+A file conforms when the frontmatter fence opens on line 1 and closes, no `kind` key is present, every required key is present, `seats` is a non-empty `[a, b]` list drawn from `creator`, `reviewer`, and `audience`, the audience-only keys appear only when `audience` is in `seats`, every `## As <seat>` section names a seat listed in `seats` and holds only that seat's labels, `name` is kebab-case, both dates are `YYYY-MM-DD`, the four voice keys each hold an allowed value when present, and both body headings are present.
 Conformance is checked at dev time by `ci/check-persona-format.sh <file>`, which exits 0 on a conforming file and otherwise prints one `ERROR:` line naming the problem.
 No runtime validator ships with the plugin: the authoring skill's self-check and the eval graders hold the format in authored personas, and no skill ever shells out to a validator.
 
-## Example: agent persona
+## Example: creator persona
 
 ```
 ---
 name: release-reviewer
-kind: agent
+seats: [creator]
 author: Priya Natarajan
 owner: Priya Natarajan
 created: 2026-09-15
@@ -103,7 +151,7 @@ Notes: keeps review comments short and directive; praise is rare and specific.
 ```
 ---
 name: leadership-briefing
-kind: audience
+seats: [audience]
 author: Marcus Webb
 owner: Marcus Webb
 created: 2026-09-15
@@ -128,4 +176,53 @@ Opinionatedness: neutral
 Formality: formal
 Emotional awareness: task-focused
 Notes: wants the ask in the first paragraph.
+```
+
+## Example: a persona in three seats
+
+```
+---
+name: release-reviewer
+seats: [creator, reviewer, audience]
+author: Priya Natarajan
+owner: Priya Natarajan
+created: 2026-10-08
+last-validated: 2026-10-08
+derivation-source: distilled from twenty of the owner's own merge-request comments
+jargon-tolerance: medium
+banned-jargon: [synergy]
+time-budget: ten minutes
+---
+
+## Stance
+
+Role: reviews changes before they merge
+Expertise: build pipelines, release risk, rollback planning
+Viewpoint: a merge is a promise to production
+Cares about: small diffs, reversible changes, honest changelogs
+
+## Voice
+
+Warmth: clinical
+Opinionatedness: opinionated
+Formality: casual
+Emotional awareness: task-focused
+Notes: keeps review comments short and directive; praise is rare and specific.
+
+## As creator
+
+Produces: release notes and rollback runbooks
+Emphasizes: what changed, how to undo it, and who to call
+
+## As reviewer
+
+Approves: merge requests that touch the release pipeline
+Wants to see: a rollback step, a small diff, a release note written for its reader
+Doesn't want to see: unrelated refactors bundled into a fix, a migration with no way back
+Feedback style: short and directive; names the one blocking gap first
+
+## As audience
+
+Wants first: the bottom line and the rollback plan, before any implementation detail
+Cares about: what can break in production and how fast it can be undone
 ```

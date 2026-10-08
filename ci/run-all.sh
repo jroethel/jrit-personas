@@ -11,7 +11,7 @@ cd "$(dirname "$0")/.." || { echo "FAIL: cannot reach the repo root" >&2; exit 1
 
 fail() { echo "RUN-ALL FAIL: $1" >&2; exit 1; }
 
-for s in ci/structure-check.sh tests/test_persona_format.sh tests/test_references.sh; do
+for s in ci/structure-check.sh tests/test_*.sh; do
   echo "== $s"
   bash "$s" || fail "$s exited non-zero"
 done
