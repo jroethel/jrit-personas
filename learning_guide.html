@@ -37,7 +37,7 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; border-top: 
 </head>
 <body>
 <h1>Learning Guide</h1>
-<p class="subtitle">jrit-persona brainstorm session - 2026-09-14</p>
+<p class="subtitle">jrit-persona brainstorm session - 2026-09-14; updated 2026-10-08 (persona-seats)</p>
 
 <h2>1. Project summary and scope</h2>
 <section class="card">
@@ -138,6 +138,95 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; border-top: 
   </dl>
 </section>
 
-<footer>Generated from the 2026-09-14 brainstorm session (Claude Fable 5 + Jeremy). Companion docs live in <code>docs/briefs/2026-09-14.jrit-persona-port-brief.md</code> and jrit-loop issue #17.</footer>
+
+<h2>7. Update: persona-seats session, 2026-10-08</h2>
+<section class="card">
+  <dl>
+    <dt>What happened</dt>
+    <dd>A loop-drive run replaced the persona <code>kind</code> field with a required <code>seats</code> list, added optional <code>## As &lt;seat&gt;</code> sections, defined jargon tolerance in writing, shipped the <code>change-management-prosci</code> persona, and added two doctypes to jrit-craft. Ten units, four waves, all gates green, nothing pushed.</dd>
+    <dd>Reading the result, Jeremy asked why <code>seats</code> was required at all when the sections are optional and 11 of 14 sheets say only <code>[audience]</code>. Reconstructing the rationale from the record led to the decision below: drop the list and derive seats from the body.</dd>
+  </dl>
+</section>
+
+<h2>7a. Architectural principles that emerged</h2>
+<section class="card">
+  <dl>
+    <dt>A persona is a person; any person can sit in any seat</dt>
+    <dd>Stance and Voice are all a consumer needs to write as, read as, or review as a persona. A <code>## As &lt;seat&gt;</code> section adds to that when the persona sits in its seat; it never gates whether the persona may sit there.</dd>
+    <dd class="why">The 2026-09-14 brief already said so: "The kind field is an affordance hint, not a role lock." The seats run turned the hint into a lock (craft, review, and spawn refuse "with no fallback") without anyone deciding to.</dd>
+    <dt>A label set by mechanical migration is not a judgment</dt>
+    <dd>Every <code>seats: [audience]</code> line came from <code>sed</code> over the old <code>kind: audience</code>. It therefore carried no information about richness, consent, or intended use, yet three skills treated it as permission.</dd>
+    <dt>Spawn is persistence, not a mode and not a gate</dt>
+    <dd>spawn writes <code>.claude/agents/&lt;name&gt;.md</code> with Stance and Voice embedded "for consistent voice across ongoing work". Every session can already run craft and review with any persona by name. Fresh-context reviewers (review, rubix-review Lens A, craft-write seat review) paste the persona file into a subagent and never call spawn, so spawnability was never a precondition for seating a persona.</dd>
+    <dt>"Blessed to be spoken as" is provenance and consent, not a seat</dt>
+    <dd>The two protections the seat label stood in for are richness (visible in <code>derivation-source</code> and <code>last-validated</code>) and consent to write in a real person's voice (parked as issue #7). <code>seats: [creator]</code> measured neither: jeremy-voice spawned with no confirmation while thin converted sheets carried the same label quality.</dd>
+    <dt>Check custody can live in the spec text</dt>
+    <dd>When a plan hands workers their own test files verbatim, the plan is the custody: a byte canon built from the pinned plan commit, compared by every validator before trusting a PASS. All 17 verbatim files came out byte-identical.</dd>
+  </dl>
+</section>
+
+<h2>7b. Design-process learnings</h2>
+<section class="card">
+  <dl>
+    <dt>Before changing a design, find the written rationale and check it against the record</dt>
+    <dd>Jeremy asked for the rationale before approving a change. The brief gave three reasons for the list; two argued for the sections, not the list, and the third (checker consistency rules) was the only thing the list actually did. That reading, not intuition, settled the call.</dd>
+    <dd class="why">Surfaced 2026-10-08 answering "can you find rationale for the seats: list being explicit and required?"</dd>
+    <dt>Near-miss: an invariant can be violated by a plan that cites it</dt>
+    <dd>The seats brief inherited "one person, many seats" from the port brief and still hard-locked roles one layer down. Guard: when a brief replaces a field, re-read the invariants the old field carried and say which survive.</dd>
+    <dt>Near-miss: a required-ness inherited from the field being replaced</dt>
+    <dd>"At least one seat is required" was never argued; it was <code>kind</code>'s required-ness carried over one-for-one. Replacing a field is the moment to re-decide its cardinality and whether it is required.</dd>
+    <dt>Reconstruct the user's past thinking from artifacts, then confirm, rather than agree with the recollection</dt>
+    <dd>Jeremy's reconstruction ("only spawn if spawnable, as a blessing") was close but the record showed the opposite design intent. Reporting the discrepancy plainly produced a better decision than confirming the memory would have.</dd>
+    <dt>Change a format before it ships, not after</dt>
+    <dd>0.2.0 was merged on <code>persona-seats</code> but not pushed when the question came up. A second breaking change before the push costs one migration; after it, two. The decision was taken at the cheap moment.</dd>
+  </dl>
+</section>
+
+<h2>7c. User preferences (carry into future sessions)</h2>
+<section class="card">
+  <dl>
+    <dt>Haiku always runs at effort high</dt>
+    <dd>Stated 2026-10-08 on seeing two haiku units routed at medium. Saved to persistent memory as haiku-always-high-effort.</dd>
+    <dt>Earn agreement with an adversarial pass, even when his read is right</dt>
+    <dd>He asked "are we in danger of getting rid of something? does it really matter?" and wanted the honest answer (yes, a declared permission; no, not in its current form) before proceeding.</dd>
+    <dt>He wants a learning guide when a line of thinking matters, not only at project end</dt>
+    <dd>This section exists because the seats reasoning was worth more than the diff it produced.</dd>
+    <dt>Known plan deviations are his call, raised once at the right moment</dt>
+    <dd>The README's GNU <code>sed -i</code> one-liner was raised at the wave-2 gate before U09 wrote it; he kept it (WSL-only team, and the portable form leaves .bak files where craft-write enumerates).</dd>
+  </dl>
+</section>
+
+<h2>7d. Key decisions register</h2>
+<section class="card">
+  <table>
+    <tr><th>Decision</th><th>Alternatives considered</th><th>Why</th></tr>
+    <tr><td>Drop the <code>seats</code> list; derive seats from the body, <code>## As &lt;seat&gt;</code> sections additive</td><td>Keep the required list; make it optional with "absent means any seat"</td><td>The list was a role lock contradicting the port brief's invariant; two semantics for one key is the over-factoring Jeremy calls out</td></tr>
+    <tr><td>Carry the real-person confirmation guard (issue #7) and a spawn provenance disclosure into the same brief</td><td>Keep <code>seats: [creator]</code> as the permission; invent a richness gate</td><td>Those are the protections the label stood in for; a richness gate is not well defined</td></tr>
+    <tr><td>All ten units on the background-agent transport, none on ringer</td><td>Ringer with the claude engine</td><td>GLM lane unfunded, plan-mandated commits blocked by ringer's worktree lint, one unit writes outside git</td></tr>
+    <tr><td>Autonomy auto for the run (session override)</td><td>Pause, every gate live</td><td>ASK and STOP still blocked; saved four to six interruptions</td></tr>
+    <tr><td>Keep the GNU <code>sed -i</code> README one-liner</td><td>Portable <code>sed -i.bak</code>; a macOS note</td><td>WSL-only team; .bak files would land where craft-write enumerates</td></tr>
+    <tr><td>Defer H1 reading to the final checkpoint</td><td>Read at the wave-2 gate</td><td>Waves 3 and 4 did not depend on the answers</td></tr>
+  </table>
+</section>
+
+<h2>7e. Operational learnings</h2>
+<section class="card">
+  <dl>
+    <dt>The receipt helper's <code>done --ran</code> runs under <code>sh -c</code>, which is dash on WSL</dt>
+    <dd>A bash-only acceptance (<code>diff &lt;(...)</code>) is charged as a failed check and routed to review. Wrap every acceptance in <code>bash /tmp/&lt;run&gt;/checks/uNN.sh</code>. Worth a jrit-loop issue.</dd>
+    <dt><code>claude plugin validate --strict</code> does not parse skill frontmatter</dt>
+    <dd>A SKILL.md description written as an unquoted scalar containing ": " passed validation and the repo's structure check, and only an Opus validator caught it. A YAML parse of every <code>skills/*/SKILL.md</code> frontmatter belongs in <code>ci/structure-check.sh</code>.</dd>
+    <dt>Opus validators caught what grep anchors cannot</dt>
+    <dd>Both single-criterion fails in the run (two sentences on a line in a doctype; the YAML scalar) were invisible to the plan's anchor tests. Prose and format contracts need a reader, not a grep.</dd>
+    <dt><code>~/repos/jrit</code> is now itself a git repo</dt>
+    <dd>Nested-repo hazard: the harness's worktree isolation would snapshot the wrong repo, so every worker created its own worktree with <code>git -C &lt;repo&gt; worktree add</code>. jrit-craft worktrees must be siblings of jrit-personas because its tests resolve <code>../jrit-personas</code>.</dd>
+    <dt>A four-backtick fence hides a block from a three-backtick extractor</dt>
+    <dd>The U04 unit block was fenced with four backticks because it contained three; the prompt extractor skipped it and nearly launched U04 with U05's brief. Extractors must match <code>^`{3,4}$</code>.</dd>
+    <dt>Persona-seats eval ordering</dt>
+    <dd><code>craft-seat-refusal</code> seeded personas that Task 3 migrated, so it depended on Task 3 as well as Task 1; the plan's dependency line said Task 1 only. Evals that seed shipped files depend on every task that edits those files.</dd>
+  </dl>
+</section>
+
+<footer>Generated from the 2026-09-14 brainstorm session (Claude Fable 5 + Jeremy). Companion docs live in <code>docs/briefs/2026-09-14.jrit-persona-port-brief.md</code> and jrit-loop issue #17. Updated from the 2026-10-08 persona-seats loop-drive session (Claude Fable 5.1 + Jeremy): section 7 added; companion docs <code>docs/briefs/2026-10-08.persona-seats-brief.md</code>, <code>docs/reviews/2026-10-08.I31-I40.persona-seats-batch-review.md</code>, and the follow-on brief <code>docs/briefs/2026-10-08.seats-derived-brief.md</code>.</footer>
 </body>
 </html>
