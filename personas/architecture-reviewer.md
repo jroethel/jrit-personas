@@ -1,6 +1,5 @@
 ---
 name: architecture-reviewer
-seats: [creator]
 author: Jeremy Roethel
 owner: Jeremy Roethel
 created: 2026-09-15

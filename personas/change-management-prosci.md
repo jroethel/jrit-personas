@@ -1,6 +1,5 @@
 ---
 name: change-management-prosci
-seats: [creator, reviewer, audience]
 author: Jeremy Roethel
 owner: jroethel
 created: 2026-10-08

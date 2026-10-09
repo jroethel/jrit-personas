@@ -1,6 +1,5 @@
 ---
 name: advisory-expert
-seats: [audience]
 author: Jeremy Roethel
 owner: jroethel
 created: 2026-09-19

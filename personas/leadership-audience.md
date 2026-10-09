@@ -1,6 +1,5 @@
 ---
 name: leadership-audience
-seats: [audience]
 author: Jeremy Roethel
 owner: Jeremy Roethel
 created: 2026-09-15

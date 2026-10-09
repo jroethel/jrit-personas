@@ -1,6 +1,5 @@
 ---
 name: data-analyst
-seats: [audience]
 author: Jeremy Roethel
 owner: jroethel
 created: 2026-09-19
