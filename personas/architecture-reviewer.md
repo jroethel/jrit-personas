@@ -4,7 +4,7 @@ author: Jeremy Roethel
 owner: Jeremy Roethel
 created: 2026-09-15
 last-validated: 2026-09-15
-derivation-source: distilled from the owner's standing technical priorities: quality, simplicity, robustness, scalability, long-term maintainability
+derivation-source: "distilled from the owner's standing technical priorities: quality, simplicity, robustness, scalability, long-term maintainability"
 ---
 
 ## Stance
