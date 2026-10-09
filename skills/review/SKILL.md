@@ -16,7 +16,9 @@ Pick the mode from the request.
 "Is this right for X" is audience fit.
 "Review as X", "as its approver", or "would X approve this" is approver.
 These phrasings settle the mode with no question.
-Only when the request does not settle the mode, ask one question naming the three modes.
+When the request does not settle the mode, the persona does: a `## As reviewer` section means approver, a `## As audience` section or any audience key (`jargon-tolerance`, `banned-jargon`, `time-budget`) means audience fit, and a `## As creator` section means voice fit.
+When exactly one of those cues is present, take that mode and say in one line which cue settled it.
+Only when the persona carries none of those cues, or more than one, ask one question naming the three modes.
 
 ## Process
 
