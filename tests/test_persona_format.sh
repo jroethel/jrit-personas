@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Proves ci/check-persona-format.sh accepts valid personas and rejects malformed ones,
-# and that docs/persona-format.md carries the seats contract and the jargon definitions.
+# and that docs/persona-format.md carries the derived-seats contract and the jargon definitions.
 set -u
 cd "$(dirname "$0")/.." || { echo "FAIL: cannot reach repo root" >&2; exit 1; }
 fail() { echo "FAIL: $1" >&2; exit 1; }
 CHECK=ci/check-persona-format.sh
 FX=tests/fixtures
 
-for f in valid-creator valid-audience valid-three-seats; do
+for f in valid-plain valid-audience valid-audience-keys-no-sections valid-three-seats; do
   bash "$CHECK" "$FX/$f.md" || fail "$f.md should validate (exit 0)"
 done
 
@@ -22,26 +22,34 @@ reject() {
   printf '%s\n' "$out" | sed 's/ in [^ ]*$//' | grep -qF -- "$2" || fail "$1.md rejection must say '$2' (got: $out)"
 }
 reject invalid-missing-name "missing required key 'name'"
-reject invalid-kind 'kind is retired'
-reject invalid-unknown-seat "unknown seat 'editor'"
-reject invalid-empty-seats 'at least one seat'
-reject invalid-audience-key-without-seat 'jargon-tolerance belongs to the audience seat'
-reject invalid-section-without-seat "needs 'reviewer' in seats"
+reject invalid-kind 'kind is retired; delete the line (seats are derived from the ## As <seat> sections)'
+reject invalid-seats 'seats is retired; delete the line (seats are derived from the ## As <seat> sections)'
 reject invalid-unknown-section "section '## As editor' names no seat"
 reject invalid-label-in-wrong-section "'Approves:' does not belong in section '## As creator'"
 
-# Only the negative kind fixture may still carry a kind: line.
-hits=$(grep -l '^kind:' "$FX"/*.md | grep -vxF "$FX/invalid-kind.md" || true)
-[ -z "$hits" ] || fail "only tests/fixtures/invalid-kind.md may carry a kind: line, found: $hits"
+# Only the two negative legacy fixtures may carry a kind: or seats: line.
+hits=$(grep -lE '^(kind|seats):' "$FX"/*.md | grep -vxF -e "$FX/invalid-kind.md" -e "$FX/invalid-seats.md" || true)
+[ -z "$hits" ] || fail "only invalid-kind.md and invalid-seats.md may carry a kind: or seats: line, found: $hits"
 
 DOC=docs/persona-format.md
-for anchor in '`seats`' '## As creator' '## As reviewer' '## As audience' \
+for anchor in 'Seats are derived' 'optional and additive' 'read when the persona sits as audience' \
+              '## As creator' '## As reviewer' '## As audience' \
               'Produces:' 'Emphasizes:' 'Approves:' 'Wants to see:' "Doesn't want to see:" \
               'Feedback style:' 'Wants first:' \
               '## Jargon' 'Jargon is any term' '- `low`:' '- `medium`:' '- `high`:' '- `banned-jargon`:' \
               'When `jargon-tolerance` is absent'; do
   grep -qF -- "$anchor" "$DOC" || fail "persona-format.md is missing anchor: $anchor"
 done
-grep -qE '^\| `kind` ' "$DOC" && fail "persona-format.md still lists kind as a frontmatter key"
+grep -qF 'audience seat only' "$DOC" && fail "persona-format.md still limits the audience keys to the audience seat"
+grep -qE '^\| `(kind|seats)` ' "$DOC" && fail "persona-format.md still lists kind or seats as a frontmatter key"
+
+# example <heading line> <fixture-basename>: the first fenced block under the heading equals the fixture.
+example() {
+  awk -v h="$1" '$0 == h {f = 1; next} f && /^```$/ {if (b) exit; b = 1; next} f && b' "$DOC" \
+    | diff -q - "$FX/$2.md" >/dev/null || fail "persona-format.md example under '$1' differs from $FX/$2.md"
+}
+example '## Example: a persona with no seat sections' valid-plain
+example '## Example: a persona with audience keys' valid-audience
+example '## Example: a persona with all three seat sections' valid-three-seats
 
 echo "PASS: persona_format"

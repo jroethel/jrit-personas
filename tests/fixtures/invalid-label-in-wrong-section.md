@@ -1,6 +1,5 @@
 ---
 name: release-reviewer
-seats: [creator, reviewer]
 author: Priya Natarajan
 owner: Priya Natarajan
 created: 2026-09-15

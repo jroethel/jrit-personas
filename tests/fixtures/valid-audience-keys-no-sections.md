@@ -1,11 +1,13 @@
 ---
 name: release-reviewer
-seats: [creator, editor]
 author: Priya Natarajan
 owner: Priya Natarajan
 created: 2026-09-15
 last-validated: 2026-09-15
 derivation-source: distilled from twenty of the owner's own merge-request comments
+jargon-tolerance: low
+banned-jargon: [synergy]
+time-budget: ten minutes
 ---
 
 ## Stance

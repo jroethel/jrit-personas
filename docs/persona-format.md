@@ -17,43 +17,43 @@ The frontmatter is flat: scalar values and simple `[a, b]` lists only, never nes
 
 Required keys:
 
-| Key | Value |
-|-----|-------|
-| `name` | kebab-case stable id, `^[a-z0-9]+(-[a-z0-9]+)*$` |
-| `seats` | simple list drawn from `creator`, `reviewer`, `audience`; at least one |
-| `author` | free string: who derived the persona |
-| `owner` | free string: who owns it now |
-| `created` | date, `^[0-9]{4}-[0-9]{2}-[0-9]{2}$` |
-| `last-validated` | date, same shape; updated whenever the persona is re-validated |
+| Key                 | Value                                                                   |
+|---------------------|-------------------------------------------------------------------------|
+| `name`              | kebab-case stable id, `^[a-z0-9]+(-[a-z0-9]+)*$`                        |
+| `author`            | free string: who derived the persona                                    |
+| `owner`             | free string: who owns it now                                            |
+| `created`           | date, `^[0-9]{4}-[0-9]{2}-[0-9]{2}$`                                    |
+| `last-validated`    | date, same shape; updated whenever the persona is re-validated          |
 | `derivation-source` | free string: the source material or method the persona was derived from |
 
 Optional keys:
 
-| Key | Value |
-|-----|-------|
-| `jargon-tolerance` | `low`, `medium`, or `high`; audience seat only |
-| `banned-jargon` | simple list of strings; audience seat only |
-| `time-budget` | free string, e.g. `five minutes`; audience seat only |
+| Key                | Value                                                                    |
+|--------------------|--------------------------------------------------------------------------|
+| `jargon-tolerance` | `low`, `medium`, or `high`; read when the persona sits as audience       |
+| `banned-jargon`    | simple list of strings; read when the persona sits as audience           |
+| `time-budget`      | free string, e.g. `five minutes`; read when the persona sits as audience |
 
 ## Seats
 
-`seats` names the seats this one person sits in, as a simple list drawn from `creator`, `reviewer`, and `audience`; at least one seat is required.
+A persona is one person, and it may sit in any of three seats:
 
 - `creator`: the persona writes deliverables in its own voice.
 - `reviewer`: the persona approves material other people drafted.
 - `audience`: the persona reads material shaped for it.
 
-Stance and Voice are shared across every seat: one identity, one voice.
-Each seat may add an optional `## As <seat>` section holding only what that seat adds; a section for a seat not listed in `seats` is a format error.
+Seats are derived, never declared: the skill that uses a persona decides which seat it sits in for that run, and no frontmatter key lists or limits them.
+Stance and Voice are shared across every seat and are always enough to sit in it.
+A `## As <seat>` section is optional and additive: when the persona sits in that seat and the section exists, the section applies on top of Stance and Voice; when it does not exist, Stance and Voice alone apply.
 The persona carries no severity: whoever runs a review rates each finding by its own rules, the persona never gates, and the human decides.
 The reviewer seat lists what this person looks at; it never overrides a skill's methodology or a standing rule, and substance beats voice still holds.
 
-`seats` replaces the retired `kind` key, and a file that still carries `kind` fails the format check.
-Migration is mechanical: `kind: agent` becomes `seats: [creator]`, and `kind: audience` becomes `seats: [audience]`; seat sections are optional, so no body edit is required.
+The `kind` and `seats` keys are retired, and a file that still carries either line fails the format check.
+Migration is mechanical: delete the line; no body edit is required.
 
 ## Jargon
 
-`jargon-tolerance`, `banned-jargon`, and `time-budget` belong to the audience seat, and the format check rejects them when `audience` is not in `seats`.
+`jargon-tolerance`, `banned-jargon`, and `time-budget` may appear on any persona and are read only when the persona sits as audience.
 Creator and reviewer jargon is never a persona field: it always comes from the audience of the material.
 
 - Jargon is any term this reader would need explained to follow the sentence: insider acronyms, method and framework names, system, tool, object, and field names, and team shorthand.
@@ -67,7 +67,7 @@ When `jargon-tolerance` is absent, no tolerance level is judged and none is infe
 
 ## Body
 
-The body carries two required sections, `## Stance` and `## Voice`, then an optional `## As <seat>` section for each seat in `seats`, conventionally in the order creator, reviewer, audience.
+The body carries two required sections, `## Stance` and `## Voice`, then optional `## As <seat>` sections for any seat, conventionally in the order creator, reviewer, audience.
 
 ### `## Stance`
 
@@ -90,12 +90,12 @@ One position on each of the four axes defined in `references/voice-framework.md`
 
 The hyphenated `emotionally-attentive` is the format value; the framework reference writes the same position as prose, "emotionally attentive".
 
-### `## As creator` (optional, `creator` seat only)
+### `## As creator` (optional)
 
 - `Produces:` the deliverables this persona writes
 - `Emphasizes:` what its drafts foreground
 
-### `## As reviewer` (optional, `reviewer` seat only)
+### `## As reviewer` (optional)
 
 - `Approves:` what it signs off on
 - `Wants to see:` what it looks for and is glad to find
@@ -104,25 +104,25 @@ The hyphenated `emotionally-attentive` is the format value; the framework refere
 
 `Wants to see:` and `Doesn't want to see:` are two separate lists, never one mixed list.
 
-### `## As audience` (optional, `audience` seat only)
+### `## As audience` (optional)
 
 - `Wants first:` free prose naming what this reader wants up front; craft's lead-order rule reads it as summary-first or detail-first
 - `Cares about:` what it foregrounds as a reader
 
 Each `## As <seat>` section holds only its own seat's labels, and the format check rejects a label filed under another seat.
+A section named for anything other than `creator`, `reviewer`, or `audience` fails the format check.
 
 ## Conformance
 
-A file conforms when the frontmatter fence opens on line 1 and closes, no `kind` key is present, every required key is present, `seats` is a non-empty `[a, b]` list drawn from `creator`, `reviewer`, and `audience`, the audience-only keys appear only when `audience` is in `seats`, every `## As <seat>` section names a seat listed in `seats` and holds only that seat's labels, `name` is kebab-case, both dates are `YYYY-MM-DD`, the four voice keys each hold an allowed value when present, and both body headings are present.
+A file conforms when the frontmatter fence opens on line 1 and closes, no `kind` or `seats` line is present, every required key is present, every `## As <seat>` section names `creator`, `reviewer`, or `audience` and holds only that seat's labels, `name` is kebab-case, both dates are `YYYY-MM-DD`, the four voice keys each hold an allowed value when present, and both body headings are present.
 Conformance is checked at dev time by `ci/check-persona-format.sh <file>`, which exits 0 on a conforming file and otherwise prints one `ERROR:` line naming the problem.
 No runtime validator ships with the plugin: the authoring skill's self-check and the eval graders hold the format in authored personas, and no skill ever shells out to a validator.
 
-## Example: creator persona
+## Example: a persona with no seat sections
 
 ```
 ---
 name: release-reviewer
-seats: [creator]
 author: Priya Natarajan
 owner: Priya Natarajan
 created: 2026-09-15
@@ -146,12 +146,11 @@ Emotional awareness: task-focused
 Notes: keeps review comments short and directive; praise is rare and specific.
 ```
 
-## Example: audience persona
+## Example: a persona with audience keys
 
 ```
 ---
 name: leadership-briefing
-seats: [audience]
 author: Marcus Webb
 owner: Marcus Webb
 created: 2026-09-15
@@ -178,12 +177,11 @@ Emotional awareness: task-focused
 Notes: wants the ask in the first paragraph.
 ```
 
-## Example: a persona in three seats
+## Example: a persona with all three seat sections
 
 ```
 ---
 name: release-reviewer
-seats: [creator, reviewer, audience]
 author: Priya Natarajan
 owner: Priya Natarajan
 created: 2026-10-08
