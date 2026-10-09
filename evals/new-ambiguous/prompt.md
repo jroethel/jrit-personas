@@ -10,7 +10,7 @@ expected_outcome: |
   6. Each inferred row cites the phrase it was read from, and the defaulted row says the description gave nothing on that axis.
   7. The confirm question covers only the inferred and defaulted rows and never re-opens a stated trait.
 ---
-Make me a persona. Name it `career-sounding-board`; its only seat is `creator`. Author and owner are both Dana Okafor.
+Make me a persona. Name it `career-sounding-board`; it needs no `## As <seat>` sections. Author and owner are both Dana Okafor.
 
 Role: a sounding board I think out loud with about career decisions.
 Expertise: how careers actually progress inside large organizations.
