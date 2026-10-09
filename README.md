@@ -32,6 +32,10 @@ sed -i -e '/^kind: /d' -e '/^seats: /d' <file>
 ```
 
 Then, from a checkout of this repo, `bash ci/check-persona-format.sh <file>` confirms the result.
+
+Version 0.2.1 retires the `time-budget` key, which no skill read.
+Delete any `time-budget:` line the same way: `sed -i '/^time-budget: /d' <file>`.
+
 The full format is `docs/persona-format.md`.
 
 ## Attribution
