@@ -1,15 +1,15 @@
 # jrit-persona
 
 Portable personas for agents: written character sheets of stance (role, expertise, viewpoint) and voice that an agent can adopt or a skill can apply as a lens.
-A persona is one file for one person, holding one or more seats (`creator`, `reviewer`, `audience`) over one shared stance and voice.
+A persona is one file for one person, who may sit in any seat (`creator`, `reviewer`, `audience`) over one shared stance and voice.
 A persona is data only, never permissions or tool instructions, and every persona carries provenance frontmatter so it stays portable across projects and models.
 
 ## Skills
 
-- `/jrit-persona:new` - create one persona in a single conversation: describe it free-form, confirm only the inferred and defaulted traits, and say which seats apply.
-- `/jrit-persona:craft` - produce a deliverable given one persona holding `creator` for the voice and one holding `audience` for the reader.
-- `/jrit-persona:review` - check an existing artifact for fit to a creator voice, for fit for an audience, or review it as an approver from the reviewer seat, run as a fresh-context lens.
-- `/jrit-persona:spawn` - generate a Claude Code subagent whose system prompt encodes a chosen persona holding `creator`.
+- `/jrit-persona:new` - create one persona in a single conversation: describe it free-form, confirm only the inferred and defaulted traits, and say which `## As <seat>` sections have anything to add.
+- `/jrit-persona:craft` - produce a deliverable from any two personas, one as the voice and one as the reader; the same persona may be both.
+- `/jrit-persona:review` - check an existing artifact in one of three modes: fit to a persona's voice, fit for a persona as its reader, or the persona's own approver read, run as a fresh-context lens.
+- `/jrit-persona:spawn` - generate a Claude Code subagent whose system prompt encodes any persona, stating the persona's provenance before it writes the file.
 
 ## Install
 
@@ -22,12 +22,13 @@ claude plugin install jrit-persona@jrit-persona
 
 Version 0.2.0 is a breaking format change.
 A skill that meets an old file stops and names the fix.
-In each of your own persona files (project `personas/`, `~/.config/jrit/personas/` on every machine, and the team library), `kind: agent` becomes `seats: [creator]` and `kind: audience` becomes `seats: [audience]`.
+Seats are no longer declared: any persona may sit in any seat, and its optional `## As <seat>` sections add what that seat needs.
+In each of your own persona files (project `personas/`, `~/.config/jrit/personas/` on every machine, and the team library), delete the `kind:` line and any `seats:` line.
 No body edit is required.
 This one command runs from any directory:
 
 ```bash
-sed -i -e 's/^kind: agent$/seats: [creator]/' -e 's/^kind: audience$/seats: [audience]/' <file>
+sed -i -e '/^kind: /d' -e '/^seats: /d' <file>
 ```
 
 Then, from a checkout of this repo, `bash ci/check-persona-format.sh <file>` confirms the result.
