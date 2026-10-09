@@ -24,6 +24,7 @@ reject() {
 reject invalid-missing-name "missing required key 'name'"
 reject invalid-kind 'kind is retired; delete the line (seats are derived from the ## As <seat> sections)'
 reject invalid-seats 'seats is retired; delete the line (seats are derived from the ## As <seat> sections)'
+reject invalid-time-budget 'time-budget is retired; delete the line (no skill reads it)'
 reject invalid-unknown-section "section '## As editor' names no seat"
 reject invalid-label-in-wrong-section "'Approves:' does not belong in section '## As creator'"
 
@@ -41,7 +42,7 @@ for anchor in 'Seats are derived' 'optional and additive' 'read when the persona
   grep -qF -- "$anchor" "$DOC" || fail "persona-format.md is missing anchor: $anchor"
 done
 grep -qF 'audience seat only' "$DOC" && fail "persona-format.md still limits the audience keys to the audience seat"
-grep -qE '^\| `(kind|seats)` ' "$DOC" && fail "persona-format.md still lists kind or seats as a frontmatter key"
+grep -qE '^\| `(kind|seats|time-budget)` ' "$DOC" && fail "persona-format.md still lists a retired key as a frontmatter key"
 
 # example <heading line> <fixture-basename>: the first fenced block under the heading equals the fixture.
 example() {

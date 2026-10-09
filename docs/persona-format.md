@@ -28,11 +28,10 @@ Required keys:
 
 Optional keys:
 
-| Key                | Value                                                                    |
-|--------------------|--------------------------------------------------------------------------|
-| `jargon-tolerance` | `low`, `medium`, or `high`; read when the persona sits as audience       |
-| `banned-jargon`    | simple list of strings; read when the persona sits as audience           |
-| `time-budget`      | free string, e.g. `five minutes`; read when the persona sits as audience |
+| Key                | Value                                                              |
+|--------------------|--------------------------------------------------------------------|
+| `jargon-tolerance` | `low`, `medium`, or `high`; read when the persona sits as audience |
+| `banned-jargon`    | simple list of strings; read when the persona sits as audience     |
 
 ## Seats
 
@@ -50,10 +49,11 @@ The reviewer seat lists what this person looks at; it never overrides a skill's 
 
 The `kind` and `seats` keys are retired, and a file that still carries either line fails the format check.
 Migration is mechanical: delete the line; no body edit is required.
+The `time-budget` key is retired the same way: no skill read it, and a free-text reading time cannot be judged against a draft.
 
 ## Jargon
 
-`jargon-tolerance`, `banned-jargon`, and `time-budget` may appear on any persona and are read only when the persona sits as audience.
+`jargon-tolerance` and `banned-jargon` may appear on any persona and are read only when the persona sits as audience.
 Creator and reviewer jargon is never a persona field: it always comes from the audience of the material.
 
 - Jargon is any term this reader would need explained to follow the sentence: insider acronyms, method and framework names, system, tool, object, and field names, and team shorthand.
@@ -158,7 +158,6 @@ last-validated: 2026-09-15
 derivation-source: sketched from recurring executive readout requests
 jargon-tolerance: low
 banned-jargon: [synergy, leverage, bandwidth, low-hanging fruit]
-time-budget: five minutes
 ---
 
 ## Stance
@@ -189,7 +188,6 @@ last-validated: 2026-10-08
 derivation-source: distilled from twenty of the owner's own merge-request comments
 jargon-tolerance: medium
 banned-jargon: [synergy]
-time-budget: ten minutes
 ---
 
 ## Stance

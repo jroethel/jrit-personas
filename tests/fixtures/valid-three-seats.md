@@ -7,7 +7,6 @@ last-validated: 2026-10-08
 derivation-source: distilled from twenty of the owner's own merge-request comments
 jargon-tolerance: medium
 banned-jargon: [synergy]
-time-budget: ten minutes
 ---
 
 ## Stance

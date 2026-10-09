@@ -22,6 +22,8 @@ for key in kind seats; do
   printf '%s\n' "$fm" | grep -q -- "^$key:" \
     && err "$key is retired; delete the line (seats are derived from the ## As <seat> sections)"
 done
+printf '%s\n' "$fm" | grep -q -- '^time-budget:' \
+  && err "time-budget is retired; delete the line (no skill reads it)"
 
 for key in name author owner created last-validated derivation-source; do
   printf '%s\n' "$fm" | grep -q -- "^$key:" || err "frontmatter is missing required key '$key'"

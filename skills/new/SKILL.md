@@ -26,7 +26,7 @@ Also extract the items for each `## As <seat>` section the description supports:
 - Reviewer: `Approves:`, `Wants to see:`, `Doesn't want to see:`, and `Feedback style:`.
   `Wants to see:` and `Doesn't want to see:` are two separate lists, never one mixed list.
   Carry no severity: the persona never carries one.
-- Audience: `Wants first:` and `Cares about:`, plus the frontmatter keys `jargon-tolerance`, `banned-jargon`, and `time-budget`.
+- Audience: `Wants first:` and `Cares about:`, plus the frontmatter keys `jargon-tolerance` and `banned-jargon`.
   Their meanings are the `## Jargon` definitions in `${CLAUDE_PLUGIN_ROOT}/docs/persona-format.md`.
 
 A seat item is labeled `stated` or `inferred` like any trait and gets its own row in the label table.

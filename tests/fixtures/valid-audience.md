@@ -7,7 +7,6 @@ last-validated: 2026-09-15
 derivation-source: sketched from recurring executive readout requests
 jargon-tolerance: low
 banned-jargon: [synergy, leverage, bandwidth, low-hanging fruit]
-time-budget: five minutes
 ---
 
 ## Stance
