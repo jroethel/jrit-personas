@@ -6,18 +6,17 @@ description: >-
 
 # Review
 
-This skill runs one of three modes against a named persona.
-Voice fit: the persona holds `creator`, and the question is whether the artifact sounds like it.
-Audience fit: the persona holds `audience`, and the question is whether the artifact is right for it as a reader.
-Approver: the persona holds `reviewer`, and the skill reports the persona's own approver read of the artifact.
+This skill runs one of three modes against any named persona.
+Voice fit: whether the artifact sounds like the persona.
+Audience fit: whether the artifact is right for the persona as its reader.
+Approver: the persona's own approver read of the artifact.
 
 Pick the mode from the request.
 "Does this sound like X" is voice fit.
 "Is this right for X" is audience fit.
 "Review as X", "as its approver", or "would X approve this" is approver.
 These phrasings settle the mode with no question.
-Only when the request does not settle the mode and the persona holds more than one matching seat, ask one question naming the seats.
-When the persona lacks the seat the mode needs, stop and say which seat is missing.
+Only when the request does not settle the mode, ask one question naming the three modes.
 
 ## Process
 
@@ -27,8 +26,8 @@ Read `${CLAUDE_PLUGIN_ROOT}/references/resolution.md` in full before searching f
 Follow its four-tier search order exactly: the project library, the user library, the team library when configured, then the distributed library.
 State the exact resolved file path in your response, in the form resolution.md specifies, before applying any persona content.
 If the name resolves nowhere, fail exactly as resolution.md describes: name the missing persona and every searched location, and do not proceed with a guess or a default voice.
-After resolution, when the persona carries a legacy `kind:` line and no `seats:` line, stop and say the file uses the retired `kind:` key.
-Give the one-line fix: replace `kind: agent` with `seats: [creator]`, or `kind: audience` with `seats: [audience]`.
+When the persona's frontmatter carries a `kind:` or `seats:` line, stop and say the file uses a retired `kind:` or `seats:` line.
+Give the one-line fix: delete the line (seats are derived from the persona's `## As <seat>` sections).
 
 ### 2. Read the voice framework
 
@@ -57,11 +56,11 @@ When the persona has no `jargon-tolerance`, no tolerance level is judged or infe
 
 #### Approver mode
 
-A second, named audience persona for the material (one holding `audience`) is optional and never asked for before the review starts.
+A second, named audience persona for the material is optional and never asked for before the review starts.
 When one is named, judge jargon against it as below.
 When none is named, run the review anyway and report the line "jargon not judged: no audience persona named".
 
-Read the reviewer persona's `## As reviewer` section.
+When the persona has a `## As reviewer` section, read it.
 Report what the artifact does that `Wants to see:` names, what `Wants to see:` names that is missing, and each `Doesn't want to see:` item it finds.
 Report the `Doesn't want to see:` items as red flags rather than denials, which the human may accept as exceptions with a reason.
 Write the report in the persona's `Feedback style:` and Voice.
