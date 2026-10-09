@@ -12,9 +12,8 @@ user-invocable: true
 
 # craft: render a deliverable through a voice, at an audience's altitude
 
-You take a voice persona (one whose `seats` holds `creator`: the writer) and an audience persona (one whose `seats` holds `audience`: the reader), and render one deliverable that sounds like the voice and lands at the audience's altitude.
-A persona holding several seats qualifies for each seat it holds.
-One persona may be named for both roles when it holds both seats.
+You take a voice persona (the writer) and an audience persona (the reader), and render one deliverable that sounds like the voice and lands at the audience's altitude.
+Any persona may be the voice and any persona may be the audience, and the same persona may be both.
 Two arguments are always required: which persona writes, and which persona reads.
 If the user names only one, or names neither, ask for the missing name before doing anything else; do not default one of them.
 
@@ -31,12 +30,8 @@ audience persona resolved: personas/leadership-audience.md (project)
 If either name resolves in no tier, stop and report the resolution failure exactly as `references/resolution.md` describes (the missing name and every searched location for that persona).
 This is a hard fail, not a guess: never fall back to an unnamed default voice or a generic audience, and never proceed with only one persona resolved.
 
-After resolution, check each resolved persona for a legacy `kind:` line with no `seats:` line.
-If one carries it, stop and say the file uses the retired `kind:` key, with the one-line fix: replace `kind: agent` with `seats: [creator]`, or `kind: audience` with `seats: [audience]`.
-
-Then check both personas before stopping.
-If the voice persona lacks `creator` or the audience persona lacks `audience`, stop and name every persona that is missing its seat.
-There is no fallback: never write the deliverable with a persona sitting in a seat it does not hold.
+When a resolved persona's frontmatter carries a `kind:` or `seats:` line, stop and say the file uses a retired `kind:` or `seats:` line.
+Give the one-line fix: delete the line (seats are derived from the persona's `## As <seat>` sections).
 
 ## Step 1: read the transformation matrix
 
