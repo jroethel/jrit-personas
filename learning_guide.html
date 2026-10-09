@@ -227,6 +227,95 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; border-top: 
   </dl>
 </section>
 
-<footer>Generated from the 2026-09-14 brainstorm session (Claude Fable 5 + Jeremy). Companion docs live in <code>docs/briefs/2026-09-14.jrit-persona-port-brief.md</code> and jrit-loop issue #17. Updated from the 2026-10-08 persona-seats loop-drive session (Claude Fable 5.1 + Jeremy): section 7 added; companion docs <code>docs/briefs/2026-10-08.persona-seats-brief.md</code>, <code>docs/reviews/2026-10-08.I31-I40.persona-seats-batch-review.md</code>, and the follow-on brief <code>docs/briefs/2026-10-08.seats-derived-brief.md</code>.</footer>
+<h2>8. Update: seats-derived session, 2026-10-08 to 2026-10-09</h2>
+<section class="card">
+  <dl>
+    <dt>What happened</dt>
+    <dd>A second loop-drive run executed <code>docs/plans/2026-10-08.seats-derived-plan.md</code>: retire the <code>seats</code> key, derive seats from the body, drop every seat refusal from craft, review, and spawn, and add spawn's provenance line. Eight units in four waves, tracker issues #41 to #48, autonomy auto, 7 of 8 first-try passes, zero check bugs or spec problems.</dd>
+    <dd>Jeremy then read the result (H1), fired the live eval (H2), merged and pushed both repos to <code>main</code> (H3), and updated both installed plugins from 0.1.0 to 0.2.0 (H4). H2 found one real regression that no static gate had seen, fixed by a three-line correction before the push.</dd>
+  </dl>
+</section>
+
+<h2>8a. Architectural principles that emerged</h2>
+<section class="card">
+  <dl>
+    <dt>Retiring a key means giving every rule that read it a new source of truth, not just deleting the read</dt>
+    <dd>Review's mode rule used to settle "review X against Y" from Y's declared seat. The plan deleted the seat and rewrote the line to ask whenever the request names no mode, so the skill began stopping at a question on the most common request. The fix settles the mode from the persona's cues: a <code>## As reviewer</code> section means approver, a <code>## As audience</code> section or any audience key means audience fit, a <code>## As creator</code> section means voice fit, and only none or several cues ask.</dd>
+    <dd class="why">Surfaced 2026-10-09 when <code>review-misalignments</code> scored 0.33 with two of three runs ending at "which mode?"; fixed in commit <code>be57fbe</code>.</dd>
+    <dt>A declared key with no reader is a false promise in the format doc</dt>
+    <dd><code>time-budget</code> is documented as "read when the persona sits as audience", accepted by the checker, extracted by <code>new</code>, and read by nothing. Filed as issue #49 (wire it into craft and review as a length cue, or retire it).</dd>
+    <dd class="why">Jeremy caught it during the H1 read: "what does time-budget actually do? what uses it, and how?"</dd>
+    <dt>Exact error strings pinned across repos are a contract, and should be treated as one</dt>
+    <dd>jrit-craft's two negative persona tests grep the exact message jrit-personas's checker prints. Any rewording there breaks tests in another repo; the loop review named it as mild Primitive Obsession and acceptable as a contract check.</dd>
+  </dl>
+</section>
+
+<h2>8b. Design-process learnings</h2>
+<section class="card">
+  <dl>
+    <dt>A static gate cannot see a "when to ask" regression; only a live eval whose prompt does not name the answer can</dt>
+    <dd>Every anchor test, the full <code>ci/run-all.sh</code>, and nine Opus validators were green across four waves while review had quietly started asking a question on every unnamed-mode request. The H2 case whose prompt names no mode was the only thing that caught it.</dd>
+    <dt>A grader that passes an empty output hides exactly this kind of regression</dt>
+    <dd><code>review-clean</code> scored 1.00 while all three of its runs produced no review at all, because its grader only checks for false callouts. Filed as issue #50: a grader must fail when no deliverable was produced.</dd>
+    <dt>Haiku three-vote judges at threshold 1.0 flip on identical sound output; a sonnet judge settled it 18 of 18</dt>
+    <dd>After the fix, two with-runs that named all three planted misalignments verbatim still drew FAIL votes, and a no-plugin run with all three drew FAIL FAIL FAIL. Re-running the one case with <code>--judge-model sonnet</code> passed every vote. Same defect as MODEL-NOTES 2026-10-01 and issue #25.</dd>
+    <dt>Compile a whole-line replacement as the exact old line and the exact new line</dt>
+    <dd>Told to "replace the item X with Y", U06 swapped only the trailing phrase and kept X's parenthetical, which passes every grep anchor. The orchestrator's canon byte-compare and the validator caught it; one repair pass fixed it.</dd>
+    <dt>Near-miss: a decision already recorded in the plan was about to be asked again</dt>
+    <dd>The compile raised the README <code>sed -i</code> one-liner as an ASK before wave 3, though plan line 30 records Jeremy's 2026-10-08 decision to keep it. The pin review made it record-only. A decision in the plan's Global constraints is not re-asked.</dd>
+    <dt>Near-miss: a count in a prompt drifted from the directory it described</dt>
+    <dd>The U08 validator brief said "eight canon files" where six existed; the validator judged by the directory and flagged the wording. Cite the directory, never the number.</dd>
+    <dt>Near-miss: a memory note from the previous run read like an order not to run this one</dt>
+    <dd>The U02 worker saw the auto-memory line "do not re-run or push" from the persona-seats run and raised it as an open question instead of acting on it. Memory notes about a run must carry the run name and date so the next run on the same branch is not mistaken for a re-run.</dd>
+    <dt>Reviews that validators already gated can still earn their keep as advisory</dt>
+    <dd>The two-axis loop review found no spec gaps but surfaced three pre-existing drifts between <code>docs/loop/conventions.md</code> and how the loop skills actually name handoffs and journals, plus the never-applied archive rule.</dd>
+  </dl>
+</section>
+
+<h2>8c. User preferences (carry into future sessions)</h2>
+<section class="card">
+  <dl>
+    <dt>Worker roster is opus, sonnet, and haiku only; sonnet and haiku always run at effort high</dt>
+    <dd>Stated at invocation on 2026-10-08. Validators stay on Opus at medium unless gate-critical.</dd>
+    <dt>Findings outside the plan go to the backlog, not into the run</dt>
+    <dd>"backlog it" for <code>time-budget</code>; the vacuous grader was filed the same way. Each got an <code>idea</code> issue with the evidence and the options so a cold session can pick it up.</dd>
+    <dt>Irreversible steps are fired by his explicit word after the staged command and blast radius are shown</dt>
+    <dd>"fire h3" and "fire it" came only after the exact commands, the commit counts, and the verify line were on screen.</dd>
+    <dt>A question during a read is a delegation: evidence first, then one recommendation with the alternatives named</dt>
+    <dd>The <code>time-budget</code> question was answered with a grep across both repos, a lean (wire it in), and the two real options.</dd>
+  </dl>
+</section>
+
+<h2>8d. Key decisions register</h2>
+<section class="card">
+  <table>
+    <tr><th>Decision</th><th>Alternatives considered</th><th>Why</th></tr>
+    <tr><td>All eight units on the background-agent transport</td><td>Ringer with the claude engine</td><td>Roster excludes the flat-rate lane; plan tasks commit; U02 writes outside git; jrit-craft gates read sibling paths</td></tr>
+    <tr><td>Autonomy auto as a session override; README <code>sed -i</code> record-only</td><td>Pause; re-ask the sed question</td><td>ASK and STOP still blocked; the sed decision is plan line 30</td></tr>
+    <tr><td>U02's live user-tier edit as a DEFAULT take</td><td>STOP and ask</td><td>The plan's Run shape marks it auto with the <code>.bak</code> hash-pinned and the Abort path named</td></tr>
+    <tr><td>Resume-pointer slugs prefixed <code>seats-derived-</code></td><td>Bare slugs</td><td>Five bare slugs would have overwritten the previous run's committed pointers</td></tr>
+    <tr><td>Review settles the mode from the persona's seat cues before asking</td><td>Default to audience fit; make the eval prompt name the mode</td><td>Restores the pre-change behaviour without the key; naming the mode in the eval would hide a question every user hits</td></tr>
+    <tr><td>Re-run <code>review-misalignments</code> with a sonnet judge</td><td>Reword the grader; accept 0.33</td><td>The failed outputs met the criteria verbatim; the judge, not the skill, was wrong</td></tr>
+    <tr><td>Backlog <code>time-budget</code> (#49) and the vacuous grader (#50)</td><td>Fix before H3</td><td>Both are outside the plan; Jeremy's call was "backlog it"</td></tr>
+  </table>
+</section>
+
+<h2>8e. Operational learnings</h2>
+<section class="card">
+  <dl>
+    <dt><code>claude plugin eval</code> takes <code>--case &lt;glob&gt;</code> and <code>--judge-model &lt;model&gt;</code>; the default judge is haiku</dt>
+    <dd>One case re-runs for about a dollar. Results keep <code>aggregate-result.json</code> with each run's judged last message but no judge rationale; <code>--keep-temp</code> is the only way to keep traces.</dd>
+    <dt>Attribute an eval fail from the judged evidence, never from the score</dt>
+    <dd>Reading the three with-run outputs showed the skill fix had taken before the judge said otherwise; the score alone would have sent the fix back to the skill.</dd>
+    <dt>The sibling-worktree pattern held for a second run</dt>
+    <dd>Every worker created <code>~/repos/jrit/&lt;repo&gt;-uNN</code> itself; no harness isolation; all pruned at the gates. The custody canon (56 files from the pinned plan commit) was byte-identical on every unit.</dd>
+    <dt>Journal entries are human-read: one sentence per line</dt>
+    <dd>The loop review flagged multi-sentence lines in the gate journal; the orchestrator reflowed it in the closing commit.</dd>
+    <dt>Two pre-existing defects to file</dt>
+    <dd><code>personas/architecture-reviewer.md</code> has an unquoted colon in <code>derivation-source</code>, so its frontmatter fails a YAML parse that the grep-based checker cannot see. <code>docs/loop/conventions.md</code> names a filename grammar the loop skills do not use and an archive rule nobody has applied.</dd>
+  </dl>
+</section>
+
+<footer>Generated from the 2026-09-14 brainstorm session (Claude Fable 5 + Jeremy). Companion docs live in <code>docs/briefs/2026-09-14.jrit-persona-port-brief.md</code> and jrit-loop issue #17. Updated from the 2026-10-08 persona-seats loop-drive session (Claude Fable 5.1 + Jeremy): section 7 added; companion docs <code>docs/briefs/2026-10-08.persona-seats-brief.md</code>, <code>docs/reviews/2026-10-08.I31-I40.persona-seats-batch-review.md</code>, and the follow-on brief <code>docs/briefs/2026-10-08.seats-derived-brief.md</code>. Updated from the 2026-10-08 to 2026-10-09 seats-derived loop-drive session (Claude Fable 5.1 + Jeremy): section 8 added; companion docs <code>docs/plans/2026-10-08.seats-derived-plan_loop.md</code>, <code>docs/reviews/2026-10-08.I41-I48.seats-derived-batch-review.md</code>, and <code>docs/reviews/2026-10-08.I41-I48.seats-derived-loop-review.md</code>.</footer>
 </body>
 </html>
