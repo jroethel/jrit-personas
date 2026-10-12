@@ -8,7 +8,7 @@ A persona file is portable self-contained text: no absolute paths, nothing harne
 ## Name and resolution
 
 `name` is a stable identifier in kebab-case, matching `^[a-z0-9]+(-[a-z0-9]+)*$`.
-A persona named `mentor` lives at `mentor.md` and is resolved by exact name, project library first, per `references/resolution.md`.
+A persona named `mentor` lives at `mentor.md` and is resolved by exact name, project library first, per `resolution.md`.
 Renaming a persona is a breaking change: consumers resolve exact names and never approximate a miss.
 
 ## Frontmatter
@@ -80,7 +80,7 @@ Four label lines, each with a free-string value:
 
 ### `## Voice`
 
-One position on each of the four axes defined in `references/voice-framework.md`, written as words, never numbers:
+One position on each of the four axes defined in `voice-framework.md`, written as words, never numbers:
 
 - `Warmth:` `clinical`, `warm`, or `playful`
 - `Opinionatedness:` `neutral` or `opinionated`

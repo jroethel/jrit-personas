@@ -12,8 +12,9 @@ Resolution is by exact name against four locations, in a fixed order, most local
 3. The team library, only when configured: the `personas/` directory under the path named by the
    line-anchored key `team-inventory-home:` in `~/.config/jrit/inventory-pointer.md`.
    When the key is absent or blank, the team tier is skipped entirely.
-4. The distributed library: the `personas/` directory beside this file's `references/` directory, the personas shipped with jrit-personas.
-   From a skill folder that is `../../personas/`, so it resolves the same way in a plugin install and in a linked checkout.
+4. The distributed library: the `personas/` directory at the root of the jrit-personas checkout, the personas shipped with it.
+   From the persona-reference skill's folder that is `../../personas`.
+   Resolve it in a shell with `realpath "<persona-reference skill folder>/../../personas"`, so a symlinked skill folder resolves to the same directory as a plugin install.
 
 The most local location that holds the name wins.
 A persona that shares a name with one in a lower tier shadows it: the consumer uses the winning file and never reads the shadowed file in that run.

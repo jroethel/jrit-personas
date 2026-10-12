@@ -3,7 +3,7 @@
 # harness-provided HOME. The distributed plugin library ships a second copy of the same
 # name in its own personas/ directory (added by the jrit-craft port, Task 4), and no
 # project personas/ directory exists in this run, so the user tier must win over the
-# distributed tier per references/resolution.md. The two Stance role lines are visibly
+# distributed tier per skills/persona-reference/references/resolution.md. The two Stance role lines are visibly
 # different so the transcript shows which file was actually resolved. HOME is provided
 # by the harness; never re-export it.
 set -eu

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Proves ci/check-persona-format.sh accepts valid personas and rejects malformed ones,
-# and that docs/persona-format.md carries the derived-seats contract and the jargon definitions.
+# and that skills/persona-reference/references/persona-format.md carries the derived-seats contract and the jargon definitions.
 set -u
 cd "$(dirname "$0")/.." || { echo "FAIL: cannot reach repo root" >&2; exit 1; }
 fail() { echo "FAIL: $1" >&2; exit 1; }
@@ -32,7 +32,7 @@ reject invalid-label-in-wrong-section "'Approves:' does not belong in section '#
 hits=$(grep -lE '^(kind|seats):' "$FX"/*.md | grep -vxF -e "$FX/invalid-kind.md" -e "$FX/invalid-seats.md" || true)
 [ -z "$hits" ] || fail "only invalid-kind.md and invalid-seats.md may carry a kind: or seats: line, found: $hits"
 
-DOC=docs/persona-format.md
+DOC=skills/persona-reference/references/persona-format.md
 for anchor in 'Seats are derived' 'optional and additive' 'read when the persona sits as audience' \
               '## As creator' '## As reviewer' '## As audience' \
               'Produces:' 'Emphasizes:' 'Approves:' 'Wants to see:' "Doesn't want to see:" \

@@ -1,6 +1,6 @@
 {
   "name": "jrit-persona",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Portable persona authoring: create, craft with, review against, and spawn personas that carry consistent voice and stance.",
   "author": { "name": "Jeremy Roethel" },
   "repository": "https://github.com/jroethel/jrit-personas",

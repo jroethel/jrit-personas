@@ -3,7 +3,7 @@ max_turns: 12
 allowed_tools: [Skill, Read, Write, Bash]
 expected_outcome: |
   1. The global library under `~/.config/jrit/personas/` does not exist when the run starts; the scaffold asserts that.
-  2. The new skill creates the library rather than failing on its absence, per the first-use rule in `references/resolution.md`.
+  2. The new skill creates the library rather than failing on its absence, per the first-use rule in `skills/persona-reference/references/resolution.md`.
   3. It writes the persona `release-notes-editor` into the global library, not into a project `personas/` directory.
   4. Its closing message states the absolute path of the file it created, under a `.config/jrit/personas/` directory, and says the library had to be created.
   5. Every trait in the description is labeled `stated`, so no confirm pass runs and the file is written in the same turn.

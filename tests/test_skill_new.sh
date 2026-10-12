@@ -9,7 +9,7 @@ grep -qE '`kind` (is|\()' "$S" && fail "new still names the retired kind field"
 grep -qF '`seats`' "$S" && fail "new still authors the retired seats key"
 for anchor in '## As creator' '## As reviewer' '## As audience' 'Produces:' 'Emphasizes:' 'Approves:' \
               'Wants to see:' "Doesn't want to see:" 'Feedback style:' 'Wants first:' 'jargon-tolerance' \
-              'docs/persona-format.md' 'which `## As <seat>` sections' 'No `kind:` or `seats:` line'; do
+              'persona-format' 'which `## As <seat>` sections' 'No `kind:` or `seats:` line'; do
   grep -qF -- "$anchor" "$S" || fail "new SKILL.md is missing anchor: $anchor"
 done
 for f in evals/new-terse/prompt.md evals/new-terse/graders/schema-valid.md evals/new-ambiguous/prompt.md \

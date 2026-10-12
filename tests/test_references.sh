@@ -3,8 +3,8 @@
 set -uo pipefail
 cd "$(dirname "$0")/.." || { echo "FAIL: cannot reach repo root" >&2; exit 1; }
 fail() { echo "FAIL: $1" >&2; exit 1; }
-VF=references/voice-framework.md
-RES=references/resolution.md
+VF=skills/persona-reference/references/voice-framework.md
+RES=skills/persona-reference/references/resolution.md
 
 for anchor in Warmth Opinionatedness Formality "Emotional awareness" \
               "voice, not substance" "explicit beats implicit"; do

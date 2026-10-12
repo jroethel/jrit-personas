@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Dev-time persona format check against docs/persona-format.md.
+# Dev-time persona format check against skills/persona-reference/references/persona-format.md.
 # grep/sed only: no parser, no third-party dependency.
 # Never invoked by a skill at runtime and never shipped as a runtime dependency.
 # Exits 0 when the file conforms; otherwise prints one ERROR line to stderr and exits 1.

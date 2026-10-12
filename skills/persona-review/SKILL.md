@@ -6,6 +6,8 @@ description: >-
 
 # Review
 
+Shared text comes from the `persona-reference` skill: load a topic by invoking that skill with the topic name, or, in a harness with no skill tool, read that skill's `SKILL.md` and the named file in its `references/` folder.
+
 This skill runs one of three modes against any named persona.
 Voice fit: whether the artifact sounds like the persona.
 Audience fit: whether the artifact is right for the persona as its reader.
@@ -24,7 +26,7 @@ Only when the persona carries none of those cues, or more than one, ask one ques
 
 ### 1. Resolve the persona (step 0)
 
-Read `../../references/resolution.md` in full before searching for anything.
+Load the `resolution` topic of the `persona-reference` skill in full before searching for anything.
 Follow its four-tier search order exactly: the project library, the user library, the team library when configured, then the distributed library.
 State the exact resolved file path in your response, in the form resolution.md specifies, before applying any persona content.
 If the name resolves nowhere, fail exactly as resolution.md describes: name the missing persona and every searched location, and do not proceed with a guess or a default voice.
@@ -33,7 +35,7 @@ Give the one-line fix: delete the line (seats are derived from the persona's `##
 
 ### 2. Read the voice framework
 
-Read `../../references/voice-framework.md` before judging voice.
+Load the `voice-framework` topic of the `persona-reference` skill before judging voice.
 Use its four axes (warmth, opinionatedness, formality, emotional awareness) and the "voice, not substance" rule to judge whether the artifact's voice fits the persona.
 Voice is never a stand-in for judging whether the artifact's substance is correct - that is not this skill's job.
 
@@ -53,7 +55,7 @@ Check the artifact against the persona's Voice: does its warmth, opinionatedness
 #### Audience fit
 
 Judge the lead order against `Wants first:` in `## As audience` when present, else against what the Stance says the reader wants first.
-Judge jargon against the persona's `jargon-tolerance` by the definitions in the `## Jargon` section of `../../docs/persona-format.md`, and against every `banned-jargon` term.
+Judge jargon against the persona's `jargon-tolerance` by the definitions in the `## Jargon` section of the `persona-format` topic of the `persona-reference` skill, and against every `banned-jargon` term.
 When the persona has no `jargon-tolerance`, no tolerance level is judged or inferred: only `banned-jargon` and plain clarity apply.
 
 #### Approver mode

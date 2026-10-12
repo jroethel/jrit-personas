@@ -61,7 +61,7 @@ $hits"
 # ---------------------------------------------------------------------------
 check_c() {
   local hits
-  hits=$(tracked 'personas/*.md' 'references/*.md' \
+  hits=$(tracked 'personas/*.md' 'references/*.md' 'skills/persona-reference/references/*.md' \
          | xargs -r grep -n -- '/home/' 2>/dev/null || true)
   [ -z "$hits" ] || fail "check C: absolute path found in a persona or reference; these files must stay portable:
 $hits"

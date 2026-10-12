@@ -10,7 +10,7 @@ grep -qE 'both searched locations|neither location' "$S" && fail "craft still de
 grep -qE 'no fallback|missing its seat|holds `creator`|holds `audience`|seats: \[' "$S" \
   && fail "craft still refuses a persona for a missing seat"
 for anchor in 'the same persona may be both' '## As creator' '## As audience' 'Produces:' 'Emphasizes:' \
-              'Wants first:' 'jargon-tolerance' 'banned-jargon' 'docs/persona-format.md' 'no `jargon-tolerance`' \
+              'Wants first:' 'jargon-tolerance' 'banned-jargon' 'persona-format' 'no `jargon-tolerance`' \
               'every searched location' 'retired `kind:` or `seats:` line' 'delete the line'; do
   grep -qF -- "$anchor" "$S" || fail "craft SKILL.md is missing anchor: $anchor"
 done
