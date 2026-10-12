@@ -16,7 +16,7 @@ An agent file is the highest-privilege surface there is, so this skill renders o
 
 ## Step 0: resolve the persona
 
-Read `${CLAUDE_PLUGIN_ROOT}/references/resolution.md` and resolve the named persona by its four-tier order: the project library, the user library, the team library when configured, then the distributed library, most local wins.
+Read `../../references/resolution.md` and resolve the named persona by its four-tier order: the project library, the user library, the team library when configured, then the distributed library, most local wins.
 State the resolved path in your output before you apply any of its content, for example `persona resolved: personas/architecture-reviewer.md (project)`.
 A name that resolves nowhere fails the run with the resolution failure message naming the persona and every searched location; there is no default persona and no guess.
 
@@ -54,7 +54,7 @@ Then state in your report, and in one plain line inside the agent file, that ins
 
 ## Step 2: render the voice
 
-Read `${CLAUDE_PLUGIN_ROOT}/references/voice-framework.md` for the four axes and the personality-by-artifact transformation matrix.
+Read `../../references/voice-framework.md` for the four axes and the personality-by-artifact transformation matrix.
 Take the persona's warmth and formality combination, find that column in the matrix, and turn the rows that this agent will actually produce (conversational reply, written deliverable, review feedback, status summary) into two to four concrete voice directions.
 Opinionatedness and emotional awareness each add one direction: whether the agent states a preference with its reasoning or presents options evenly, and whether it acknowledges emotional context or reports on the task only.
 

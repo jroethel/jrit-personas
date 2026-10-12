@@ -19,7 +19,7 @@ If the user names only one, or names neither, ask for the missing name before do
 
 ## Step 0: resolve both personas
 
-Resolve the voice persona name and the audience persona name independently, following the four-tier order in `${CLAUDE_PLUGIN_ROOT}/references/resolution.md`: the project library, then the user library, then the team library when configured, then the distributed library, with the most local tier winning on a name collision.
+Resolve the voice persona name and the audience persona name independently, following the four-tier order in `../../references/resolution.md`: the project library, then the user library, then the team library when configured, then the distributed library, with the most local tier winning on a name collision.
 State both resolved paths in your response before producing anything else, for example:
 
 ```
@@ -35,7 +35,7 @@ Give the one-line fix: delete the line (seats are derived from the persona's `##
 
 ## Step 1: read the transformation matrix
 
-Read `${CLAUDE_PLUGIN_ROOT}/references/voice-framework.md`.
+Read `../../references/voice-framework.md`.
 A craft deliverable is a "written deliverable" in the personality-by-artifact transformation matrix; take the voice persona's `Warmth` and `Formality` positions and use the matching cell (Warm+Casual, Warm+Formal, Clinical+Casual, or Clinical+Formal; treat `playful` as the `warm` column, since the matrix only names four cells) as the base register.
 Layer the voice persona's `Opinionatedness` and `Emotional awareness` on top using the axis definitions earlier in the same reference: an opinionated voice states a preference and its reasoning rather than presenting options equally, and an emotionally-attentive voice may acknowledge context the material carries, while a task-focused voice reports it plainly.
 Carry the voice persona's `Notes:` and `Cares about:` into what the deliverable emphasizes and how findings or recommendations are framed.
@@ -52,7 +52,7 @@ Without that section, lead order is read from the Stance: if it says the reader 
 Match the audience's `Expertise` (skip or compress what the reader already knows) and its `Cares about` line (foreground the dimensions it names, such as cost, risk, or dates).
 When a `## As audience` section is present, its `Cares about:` is foregrounded alongside the Stance's.
 
-Read the `## Jargon` section of `${CLAUDE_PLUGIN_ROOT}/docs/persona-format.md`, and apply the audience's `jargon-tolerance` (`low`, `medium`, `high`) and `banned-jargon` exactly as defined there.
+Read the `## Jargon` section of `../../docs/persona-format.md`, and apply the audience's `jargon-tolerance` (`low`, `medium`, `high`) and `banned-jargon` exactly as defined there.
 Every term on the `banned-jargon` list is absent from the deliverable, with no synonym substitution that still carries the same jargon meaning.
 When the audience persona has no `jargon-tolerance`, no tolerance level is applied or inferred: only `banned-jargon` and plain clarity apply.
 Creator jargon is never a persona field, so the writer's jargon always follows the audience.
