@@ -1,5 +1,5 @@
 ---
-name: review
+name: persona-review
 description: >-
   Checks an existing artifact against a named persona: fit to its creator voice, fit for it as an audience, or the persona's own approver read from its reviewer seat, returning concrete, located callouts. Use to review a draft, deliverable, or document against a persona - not to review code.
 ---

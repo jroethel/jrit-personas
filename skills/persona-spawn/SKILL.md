@@ -1,7 +1,7 @@
 ---
-name: spawn
+name: persona-spawn
 description: >-
-  Generate a Claude Code subagent file from any persona, embedding the persona's stance and voice in the subagent's system prompt. Use for /jrit-persona:spawn, "spawn an agent from the <name> persona", "make a subagent that sounds like <persona>", or turning a persona into a reusable agent in this project.
+  Generate a Claude Code subagent file from any persona, embedding the persona's stance and voice in the subagent's system prompt. Use for /jrit-persona:persona-spawn, "spawn an agent from the <name> persona", "make a subagent that sounds like <persona>", or turning a persona into a reusable agent in this project.
 ---
 
 # Spawn a subagent from a persona

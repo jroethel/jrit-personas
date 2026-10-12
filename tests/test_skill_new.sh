@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Proves skills/new/SKILL.md asks which seat sections to write instead of authoring the retired
+# Proves skills/persona-new/SKILL.md asks which seat sections to write instead of authoring the retired
 # seats key, and that the three authoring evals and the schema grader carry no retired key.
 set -uo pipefail
 cd "$(dirname "$0")/.." || { echo "FAIL: cannot reach repo root" >&2; exit 1; }
 fail() { echo "FAIL: $1" >&2; exit 1; }
-S=skills/new/SKILL.md
+S=skills/persona-new/SKILL.md
 grep -qE '`kind` (is|\()' "$S" && fail "new still names the retired kind field"
 grep -qF '`seats`' "$S" && fail "new still authors the retired seats key"
 for anchor in '## As creator' '## As reviewer' '## As audience' 'Produces:' 'Emphasizes:' 'Approves:' \

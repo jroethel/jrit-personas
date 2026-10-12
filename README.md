@@ -6,10 +6,10 @@ A persona is data only, never permissions or tool instructions, and every person
 
 ## Skills
 
-- `/jrit-persona:new` - create one persona in a single conversation: describe it free-form, confirm only the inferred and defaulted traits, and say which `## As <seat>` sections have anything to add.
-- `/jrit-persona:craft` - produce a deliverable from any two personas, one as the voice and one as the reader; the same persona may be both.
-- `/jrit-persona:review` - check an existing artifact in one of three modes: fit to a persona's voice, fit for a persona as its reader, or the persona's own approver read, run as a fresh-context lens.
-- `/jrit-persona:spawn` - generate a Claude Code subagent whose system prompt encodes any persona, stating the persona's provenance before it writes the file.
+- `/jrit-persona:persona-new` - create one persona in a single conversation: describe it free-form, confirm only the inferred and defaulted traits, and say which `## As <seat>` sections have anything to add.
+- `/jrit-persona:persona-craft` - produce a deliverable from any two personas, one as the voice and one as the reader; the same persona may be both.
+- `/jrit-persona:persona-review` - check an existing artifact in one of three modes: fit to a persona's voice, fit for a persona as its reader, or the persona's own approver read, run as a fresh-context lens.
+- `/jrit-persona:persona-spawn` - generate a Claude Code subagent whose system prompt encodes any persona, stating the persona's provenance before it writes the file.
 
 ## Install
 

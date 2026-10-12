@@ -1,5 +1,5 @@
 ---
-name: new
+name: persona-new
 description: Create a persona file conversationally from a free-form description, labeling every trait stated, inferred, or defaulted and confirming only the weak bins. Use for "create a persona", "make a persona for", "new persona", "turn this description into a persona", and any request to author a voice or audience sheet.
 ---
 

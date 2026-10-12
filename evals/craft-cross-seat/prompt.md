@@ -8,5 +8,5 @@ expected_outcome: |
   4. The deliverable foregrounds what the architecture-reviewer reader cares about: scalability, robustness, and maintainability.
 ---
 
-Use the `/jrit-persona:craft` skill to write a short deliverable, roughly 200 to 400 words, recommending whether the team should add a distributed cache in front of the primary database.
+Use the `/jrit-persona:persona-craft` skill to write a short deliverable, roughly 200 to 400 words, recommending whether the team should add a distributed cache in front of the primary database.
 Use `leadership-audience` as the voice persona and `architecture-reviewer` as the audience persona.

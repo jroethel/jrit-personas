@@ -1,8 +1,8 @@
 ---
-name: craft
+name: persona-craft
 description: >
   Render a deliverable through a voice persona, shaped for an audience persona. Use for
-  /jrit-persona:craft, "write this as <persona>", "draft this for <audience>", or any request
+  /jrit-persona:persona-craft, "write this as <persona>", "draft this for <audience>", or any request
   naming both a voice to write in and a reader to write for. Both personas are required
   arguments; a missing or unresolved one fails the run rather than guessing. v1 produces the
   deliverable directly as prose or markdown in the response; it never spawns an agent and never

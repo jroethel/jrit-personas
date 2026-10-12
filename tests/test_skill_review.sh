@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Proves skills/review/SKILL.md runs its three modes against any persona with no seat refusal,
+# Proves skills/persona-review/SKILL.md runs its three modes against any persona with no seat refusal,
 # reads the optional seat sections, and judges jargon by the format's definitions.
 set -uo pipefail
 cd "$(dirname "$0")/.." || { echo "FAIL: cannot reach repo root" >&2; exit 1; }
 fail() { echo "FAIL: $1" >&2; exit 1; }
-S=skills/review/SKILL.md
+S=skills/persona-review/SKILL.md
 grep -qiF 'out of scope for v1' "$S" && fail "review still declares the persona's own review out of scope"
 grep -qF '`kind`' "$S" && fail "review still names the retired kind field"
 grep -qE 'both searched locations|neither location' "$S" && fail "review still describes the two-location search"
