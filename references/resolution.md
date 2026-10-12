@@ -12,8 +12,8 @@ Resolution is by exact name against four locations, in a fixed order, most local
 3. The team library, only when configured: the `personas/` directory under the path named by the
    line-anchored key `team-inventory-home:` in `~/.config/jrit/inventory-pointer.md`.
    When the key is absent or blank, the team tier is skipped entirely.
-4. The distributed library: the `personas/` directory shipped in the jrit-personas plugin, the
-   plugin's own personas.
+4. The distributed library: the `personas/` directory beside this file's `references/` directory, the personas shipped with jrit-personas.
+   From a skill folder that is `../../personas/`, so it resolves the same way in a plugin install and in a linked checkout.
 
 The most local location that holds the name wins.
 A persona that shares a name with one in a lower tier shadows it: the consumer uses the winning file and never reads the shadowed file in that run.
@@ -22,7 +22,7 @@ In particular, the user tier wins over the distributed tier, so a user copy of a
 ## Stating the resolution
 
 The consumer states in its output the exact file path it resolved and its tier, before any persona content is applied.
-For example: `persona resolved: personas/mentor.md (project)` or `persona resolved: ~/.config/jrit/personas/mentor.md (user)` or `persona resolved: <plugin>/personas/mentor.md (distributed)`.
+For example: `persona resolved: personas/mentor.md (project)` or `persona resolved: ~/.config/jrit/personas/mentor.md (user)` or `persona resolved: <jrit-personas>/personas/mentor.md (distributed)`.
 
 ## First use: creating the user library
 
@@ -41,7 +41,7 @@ searched:
   personas/ (project)
   ~/.config/jrit/personas/ (user)
   <team-inventory-home>/personas/ (team, when configured)
-  <plugin>/personas/ (distributed)
+  <jrit-personas>/personas/ (distributed)
 ```
 
 The failure is terminal for the skill invocation: there is no fallback persona and no default voice.
